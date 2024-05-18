@@ -19,18 +19,18 @@ export default function Content() {
     <main>
       <Container maxWidth="lg" sx={{ marginTop: "4rem" }}>
         <MenuSelect menuNum={menuNum} setMenuNum={setMenuNum} />
-        {menuNum()}
         <Stack
           spacing={2}
           direction="column"
-          width={useTheme().breakpoints.values.sm}
+          // width={useTheme().breakpoints.values.sm}
           maxWidth="100%"
           m="auto"
+          mt={2}
         >
           <PubkeySet pubkey={pubkey} setPubkey={setPubkey} />
           <KindSelect kind={kind} setKind={setKind} />
-          {kind()}
-        </Stack>
+        </Stack>{" "}
+        {kind()} {menuNum()}
       </Container>
     </main>
   );

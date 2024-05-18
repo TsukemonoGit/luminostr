@@ -7,8 +7,16 @@ import {
   Card,
   useTheme,
   alpha,
+  Button,
+  Box,
+  Modal,
+  Typography,
+  IconButton,
+  Link,
+  Stack,
 } from "@suid/material";
-import { Accessor, Setter } from "solid-js";
+import { Accessor, For, Setter, createSignal } from "solid-js";
+import { extensionRelays } from "../lib/nostr/relays";
 
 export default function MenuSelect({
   menuNum,
@@ -17,39 +25,91 @@ export default function MenuSelect({
   menuNum: Accessor<number>;
   setMenuNum: Setter<number>;
 }) {
+  const [open, setOpen] = createSignal(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const handleChange = (event: { target: { value: any } }) => {
     setMenuNum(event.target.value as number);
   };
   return (
-    <Card
-      sx={{ bgcolor: alpha(useTheme().palette.secondary.light, 0.1), p: 2 }}
-    >
-      <FormControl>
-        <FormLabel id="demo-controlled-radio-buttons-group">Menu</FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={menuNum()}
-          onChange={handleChange}
+    <>
+      <Card
+        sx={{ bgcolor: alpha(useTheme().palette.secondary.light, 0.1), p: 2 }}
+      >
+        <FormControl>
+          <FormLabel id="controlled-radio-buttons-group">
+            Select Relay Count
+            <IconButton sx={{ fontSize: "medium" }} onClick={handleOpen}>
+              ?
+            </IconButton>
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby="controlled-radio-buttons-group"
+            name="controlled-radio-buttons-group"
+            value={menuNum()}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value={0}
+              control={<Radio />}
+              label="about 30 relay"
+            />
+            <FormControlLabel
+              value={1}
+              control={<Radio />}
+              label="about 60 relay"
+            />
+            <FormControlLabel
+              value={2}
+              control={<Radio />}
+              label="about 200 relay "
+            />
+            <FormControlLabel value={3} control={<Radio />} label="MAX" />
+          </RadioGroup>
+        </FormControl>
+      </Card>
+      <Modal
+        open={open()}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: useTheme().palette.background.paper,
+            // border: "2px solid #000",
+            boxShadow: "24px",
+            borderRadius: 2,
+            p: 4,
+            maxHeight: "90%",
+            overflowY: "auto",
+          }}
         >
-          <FormControlLabel
-            value={0}
-            control={<Radio />}
-            label="about 30 relay"
-          />
-          <FormControlLabel
-            value={1}
-            control={<Radio />}
-            label="about 60 relay"
-          />
-          <FormControlLabel
-            value={2}
-            control={<Radio />}
-            label="about 200 relay "
-          />
-          <FormControlLabel value={3} control={<Radio />} label="MAX" />
-        </RadioGroup>
-      </FormControl>
-    </Card>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            About Relays
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Your kind:10002 relays +
+            <For each={extensionRelays} fallback={<div>Loading...</div>}>
+              {(item) => <Stack sx={{ fontSize: "sm" }}>{item}</Stack>}
+            </For>
+            +{" "}
+            <Link
+              href="https://api.nostr.watch/v1/online"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              https://api.nostr.watch/v1/online
+            </Link>{" "}
+            relays
+          </Typography>
+        </Box>
+      </Modal>
+    </>
   );
 }
