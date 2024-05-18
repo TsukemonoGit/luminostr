@@ -4,18 +4,29 @@ import {
   Stack,
   TextField,
   ThemeProvider,
+  useTheme,
 } from "@suid/material";
 import { createSignal } from "solid-js";
 import KindSelect from "./KindSelect";
 import PubkeySet from "./PubkeySet";
+import MenuSelect from "./MenuSelect";
 export default function Content() {
   const [kind, setKind] = createSignal("");
   const [pubkey, setPubkey] = createSignal("");
+  const [menuNum, setMenuNum] = createSignal(0);
+
   return (
     <main>
       <Container maxWidth="lg" sx={{ marginTop: "4rem" }}>
-        content
-        <Stack spacing={2} direction="column">
+        <MenuSelect menuNum={menuNum} setMenuNum={setMenuNum} />
+        {menuNum()}
+        <Stack
+          spacing={2}
+          direction="column"
+          width={useTheme().breakpoints.values.sm}
+          maxWidth="100%"
+          m="auto"
+        >
           <PubkeySet pubkey={pubkey} setPubkey={setPubkey} />
           <KindSelect kind={kind} setKind={setKind} />
           {kind()}

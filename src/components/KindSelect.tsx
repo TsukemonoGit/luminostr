@@ -25,7 +25,7 @@ export default function KindSelect({
     setAnchorEl(null);
   };
   return (
-    <div>
+    <>
       <Grid
         container
         direction={"row"}
@@ -35,7 +35,7 @@ export default function KindSelect({
           alignItems: "center",
         }}
       >
-        <Grid item xs={false}>
+        <Grid item xs={"auto"}>
           <Button
             sx={{ height: "56px" }}
             variant="contained"
@@ -50,8 +50,9 @@ export default function KindSelect({
             Select
           </Button>
         </Grid>
-        <Grid item xs>
+        <Grid item xs sx={{ width: "100%" }}>
           <TextField
+            sx={{ width: "100%" }}
             label="Kind"
             type="number"
             value={kind()}
@@ -84,6 +85,6 @@ export default function KindSelect({
           )}
         </For>
       </Menu>
-    </div>
+    </>
   );
 }

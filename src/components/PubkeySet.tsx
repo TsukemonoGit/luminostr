@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from "@suid/material";
+import { Button, Grid, TextField, useTheme } from "@suid/material";
 import { Accessor, For, Setter, createSignal } from "solid-js";
 import type * as Nostr from "nostr-typedef";
 import { nip19 } from "nostr-tools";
@@ -17,7 +17,7 @@ export default function PubkeySet({
     setAnchorEl(null);
   };
   return (
-    <div>
+    <>
       <Grid
         container
         direction={"row"}
@@ -27,7 +27,7 @@ export default function PubkeySet({
           alignItems: "center",
         }}
       >
-        <Grid item xs={false}>
+        <Grid item xs={"auto"}>
           <Button
             variant="contained"
             sx={{ height: "56px" }}
@@ -44,11 +44,12 @@ export default function PubkeySet({
               }
             }}
           >
-            Get
+            GetPub
           </Button>
         </Grid>
-        <Grid item xs>
+        <Grid item xs sx={{ width: "100%" }}>
           <TextField
+            sx={{ width: "100%" }}
             label="Pubkey"
             type="text"
             value={pubkey()}
@@ -57,6 +58,6 @@ export default function PubkeySet({
           />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
