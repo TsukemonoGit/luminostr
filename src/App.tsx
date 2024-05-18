@@ -36,19 +36,17 @@ export default function App() {
     <>
       <Head />
 
-      <Container maxWidth="lg">
-        <Header />
-        <Content />
-        <Footer />
-        <Toast handleToastClose={handleToastClose} toastState={toastState} />
-        <Show when={nowProgress()}>
-          <CircularProgress
-            color="secondary"
-            sx={{ position: "fixed", bottom: 10, right: 10 }}
-            size={100}
-          />
-        </Show>
-      </Container>
+      <Header />
+      <Content />
+      <Footer />
+      <Toast handleToastClose={handleToastClose} toastState={toastState} />
+      <Show when={nowProgress()}>
+        <CircularProgress
+          color="secondary"
+          sx={{ position: "fixed", bottom: 10, right: 10 }}
+          size={100}
+        />
+      </Show>
     </>
   );
 }

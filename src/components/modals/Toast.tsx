@@ -12,7 +12,7 @@ export default function Toast({ handleToastClose, toastState, sx }: Props) {
 
   createEffect(() => {
     console.log(toastState().open);
-    setOpen(toastState().open === true ?? false);
+    setOpen(toastState().open);
   });
 
   createEffect(() => {

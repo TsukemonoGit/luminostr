@@ -1,20 +1,21 @@
-import { FormControlLabel, Switch, styled } from "@suid/material";
+import { Switch, styled } from "@suid/material";
 import { saveDarkMode, useLayoutContext } from "../../LayoutContext";
 export default function LightSwitch() {
   const layoutContext = useLayoutContext();
   return (
-    <FormControlLabel
-      control={
-        <MaterialUISwitch
-          sx={{ m: 1 }}
-          checked={layoutContext.darkMode}
-          onChange={() => {
-            layoutContext.darkMode = !layoutContext.darkMode;
-            saveDarkMode(layoutContext.darkMode);
-          }}
-        />
-      }
-      label="MUI switch"
+    // <FormControlLabel
+    //   control={
+
+    <MaterialUISwitch
+      sx={{ m: 1 }}
+      checked={layoutContext.darkMode}
+      onChange={() => {
+        layoutContext.darkMode = !layoutContext.darkMode;
+        saveDarkMode(layoutContext.darkMode);
+      }}
+      //   />
+      //   }
+      // label="MUI switch"
     />
   );
 }
