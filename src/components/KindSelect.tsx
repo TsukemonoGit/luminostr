@@ -19,8 +19,9 @@ export default function KindSelect({
   const [anchorEl, setAnchorEl] = createSignal<null | HTMLElement>(null);
   const open = () => Boolean(anchorEl());
   const handleClose = (index: number) => {
-    console.log(index);
-    setKind(index.toString());
+    if (typeof index === "number") {
+      setKind(index.toString());
+    }
     setAnchorEl(null);
   };
   return (
@@ -54,7 +55,9 @@ export default function KindSelect({
             label="Kind"
             type="number"
             value={kind()}
-            onChange={(event, value) => setKind(value)}
+            onChange={(event, value) => {
+              setKind(value);
+            }}
             //     helperText={kind()}
           />
         </Grid>
