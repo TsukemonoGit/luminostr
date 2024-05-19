@@ -9,7 +9,7 @@ import {
 import { Accessor, For, Setter, Show, createSignal } from "solid-js";
 
 import type * as Nostr from "nostr-typedef";
-import { EventList } from "../lib/nostr/nostrfunc";
+import { EventList, RelayList } from "../lib/nostr/nostrfunc";
 import EventItem from "./EventItem";
 import { EventPacket } from "rx-nostr";
 import { Dynamic } from "solid-js/web";
@@ -20,6 +20,7 @@ export default function Result({
   setEvents,
   setNowProgress,
   nowProgress,
+  publishEvent,
 }: //handleClickEvent,
 //handleClickPublish,
 {
@@ -27,6 +28,7 @@ export default function Result({
   setEvents: Setter<EventList>;
   setNowProgress: Setter<boolean>;
   nowProgress: Accessor<boolean>;
+  publishEvent: any;
   // handleClickEvent: any;
   //handleClickPublish: any;
 }) {
@@ -67,7 +69,7 @@ export default function Result({
       open: true,
     });
   };
-  const handleModalClose = (e: any) => {
+  const handleModalClose = async (e: any) => {
     console.log(e);
 
     setModalSettings((prevState) => ({
@@ -76,6 +78,8 @@ export default function Result({
     }));
     if (e === "publish") {
       console.log("publish", clickedEvent());
+      setNowProgress(true);
+      await publishEvent(clickedEvent()?.event);
     }
     setClickedEvent(null);
   };
@@ -90,6 +94,7 @@ export default function Result({
     }
     return firstEventList[0].event.kind;
   };
+
   return (
     <>
       <Typography
@@ -97,7 +102,7 @@ export default function Result({
         gutterBottom
         component="div"
         marginBottom={0}
-        sx={{ alignContent: "center" }}
+        sx={{ alignContent: "center", mt: 4 }}
       >
         Result{" "}
         {events() && getFirstEventKind() !== null

@@ -1,10 +1,19 @@
-import { Button, Container, Grid, Stack } from "@suid/material";
-import { Accessor, Setter, createSignal } from "solid-js";
+import {
+  Button,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+  useTheme,
+} from "@suid/material";
+import { Accessor, JSX, Setter, ValidComponent, createSignal } from "solid-js";
 import KindSelect from "./KindSelect";
 import PubkeySet from "./PubkeySet";
 import MenuSelect from "./MenuSelect";
 import Result from "./Result";
 import type * as Nostr from "nostr-typedef";
+import CheckIcon from "@suid/icons-material/Check";
+import WarningAmberIcon from "@suid/icons-material/WarningAmber";
 import SearchIcon from "@suid/icons-material/Search";
 import {
   EventList,
@@ -13,44 +22,19 @@ import {
   getEventList,
   getOnlineRelays,
   getUserRelayList,
+  publishEventToRelay,
 } from "../lib/nostr/nostrfunc";
 import { extensionRelays } from "../lib/nostr/relays";
 import { testEventList } from "../lib/nostr/nostrfunc.test";
 import { EventPacket } from "rx-nostr";
 import { kind30030 } from "../lib/nostr/testData";
+import { NostrEvent } from "nostr-tools";
+import { publishedJSX } from "./util/Are";
 
 const relayLength = [30, 60, 200];
 let userRelays: RelayList = {
-  read: [
-    "wss://relay.mostr.pub/",
-    "wss://nostr.zbd.gg/",
-    "wss://relay-jp.nostr.wirednet.jp/",
-    "wss://nos.lol/",
-    "wss://relay-jp.nostr.moctane.com/",
-    "wss://relay.nostr.wirednet.jp/",
-    "wss://r.kojira.io/",
-    "wss://srtrelay.c-stellar.net/",
-    "wss://relayable.org/",
-    "wss://relay.nostr.band/",
-    "wss://nostr.wine/",
-    "wss://relay.nostr.moctane.com/",
-    "wss://nostr.uneu.net/",
-    "wss://yabu.me/",
-    "wss://relay.momostr.pink/",
-  ],
-  write: [
-    "wss://relay-jp.nostr.wirednet.jp/",
-    "wss://nos.lol/",
-    "wss://relay-jp.nostr.moctane.com/",
-    "wss://relay.nostr.wirednet.jp/",
-    "wss://r.kojira.io/",
-    "wss://nostr.fediverse.jp/",
-    "wss://srtrelay.c-stellar.net/",
-    "wss://nrelay-jp.c-stellar.net/",
-    "wss://relay.nostr.moctane.com/",
-    "wss://nosdrive.app/relay/",
-    "wss://yabu.me/",
-  ],
+  read: [],
+  write: [],
 };
 let pubHex: string;
 let nsecArray: Uint8Array;
@@ -111,8 +95,12 @@ export default function Content({
         console.log("failed to get online relays");
         setToastState({
           open: true,
-          message:
-            "Failed to get online relays. \n Please check the option to 'about 30 relay' or wait for a while and retry",
+          message: (
+            <>
+              Failed to get online relays. <br /> Please check the option to
+              'about 30 relay' or wait for a while and retry
+            </>
+          ),
           type: "error",
         });
 
@@ -121,9 +109,11 @@ export default function Content({
       }
     }
     console.log(pubHex);
-    console.log(kind());
+    console.log(kindNum);
     try {
-      // userRelays = await getUserRelayList(pubHex);
+      if (userRelays.read.length <= 0) {
+        userRelays = await getUserRelayList(pubHex);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -137,14 +127,14 @@ export default function Content({
       ])
     );
     try {
-      // const eventList = await getEventList(
-      //   pubHex,
-      //   kindNum,
-      //   totalRelay,
-      //   menuNum() < 3 ? relayLength[menuNum()] : totalRelay.length
-      // );
+      const eventList = await getEventList(
+        pubHex,
+        kindNum,
+        totalRelay,
+        menuNum() < 3 ? relayLength[menuNum()] : totalRelay.length
+      );
       //const eventList = testEventList;
-      const eventList = kind30030;
+      //const eventList = kind30030;
       console.log(eventList);
       setEvents(eventList);
     } catch (error) {
@@ -152,6 +142,45 @@ export default function Content({
     }
 
     setNowProgress(false);
+  };
+
+  const publishEvent = async (ev: NostrEvent) => {
+    if (userRelays.write.length <= 0) {
+      return;
+    }
+    try {
+      const res: Map<string, boolean> = await publishEventToRelay(
+        ev,
+        userRelays.write,
+        nsecArray
+      );
+      const message = publishedJSX(useTheme(), res);
+
+      const hasSuccess = Array.from(res.values()).some(
+        (isSuccess) => isSuccess
+      );
+      setToastState({
+        open: true,
+        message: (
+          <Stack flexDirection="row" flexWrap="wrap" gap={1}>
+            {message}
+          </Stack>
+        ),
+        type: hasSuccess ? "success" : "error",
+        title: "Published",
+      });
+
+      setNowProgress(false);
+    } catch (error: any) {
+      setToastState({
+        open: true,
+        message: error.message ? error.message : "Failed to publish",
+        type: "error",
+      });
+      console.log(error);
+
+      setNowProgress(false);
+    }
   };
 
   return (
@@ -166,6 +195,16 @@ export default function Content({
               maxWidth="100%"
               sx={{ mt: { xs: 2, sm: 0 } }}
             >
+              {" "}
+              <Typography
+                variant="h4"
+                gutterBottom
+                component="div"
+                marginBottom={0}
+                sx={{ alignContent: "center" }}
+              >
+                Setting
+              </Typography>
               <PubkeySet
                 pubkey={pubkey}
                 setPubkey={setPubkey}
@@ -203,8 +242,8 @@ export default function Content({
           setEvents={setEvents}
           nowProgress={nowProgress}
           setNowProgress={setNowProgress}
+          publishEvent={publishEvent}
         />
-        {kind()} {menuNum()}
       </Container>
     </main>
   );

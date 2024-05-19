@@ -1,11 +1,12 @@
 import type * as Nostr from "nostr-typedef";
-import { ValidComponent } from "solid-js";
+import { JSX, ValidComponent } from "solid-js";
 declare global {
   interface ToastSettings {
     open: boolean;
-    message: string;
+    message: JSX.Element | JSX.Element[];
     type: "success" | "info" | "warning" | "error";
     timeout?: number;
+    title?: string;
   }
 
   interface Window {

@@ -1,5 +1,5 @@
-import { Box, Fade, Alert } from "@suid/material";
-import { Accessor, createEffect, createSignal } from "solid-js";
+import { Box, Fade, Alert, useTheme, AlertTitle } from "@suid/material";
+import { Accessor, Show, createEffect, createSignal } from "solid-js";
 
 interface Props {
   handleToastClose: () => void; // ハンドラー関数の型を修正
@@ -45,9 +45,16 @@ export default function Toast({ handleToastClose, toastState, sx }: Props) {
       >
         <Alert
           variant="outlined"
-          sx={{ width: "100%", maxWidth: "1024px" }}
+          sx={{
+            width: "100%",
+            maxWidth: "1024px",
+            bgcolor: useTheme().palette.background.paper,
+          }}
           severity={toastState()?.type}
         >
+          <Show when={toastState()?.title}>
+            <AlertTitle>{toastState()?.title}</AlertTitle>
+          </Show>
           {toastState()?.message}
         </Alert>
       </Box>

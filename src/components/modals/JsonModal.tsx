@@ -92,7 +92,13 @@ export default function JsonModal(props: {
         }}
       >
         <Grid container spacing={2} sx={{ height: "100%" }}>
-          <Grid item xs={8}>
+          <Grid
+            item
+            container
+            flexWrap="wrap"
+            justifyContent="space-between"
+            flexDirection="row"
+          >
             <Typography
               variant="h4"
               component="div"
@@ -100,19 +106,10 @@ export default function JsonModal(props: {
             >
               EventJson
             </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              height: "fit",
-              justifyContent: "end",
-            }}
-          >
+
             <Stack
               sx={{
-                justifyContent: "end",
+                ml: "auto",
               }}
             >
               <Button

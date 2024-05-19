@@ -1,5 +1,36 @@
-import { EventList } from "./nostrfunc";
-
+import { EventList, RelayList } from "./nostrfunc";
+let userRelays: RelayList = {
+  read: [
+    "wss://relay.mostr.pub/",
+    "wss://nostr.zbd.gg/",
+    "wss://relay-jp.nostr.wirednet.jp/",
+    "wss://nos.lol/",
+    "wss://relay-jp.nostr.moctane.com/",
+    "wss://relay.nostr.wirednet.jp/",
+    "wss://r.kojira.io/",
+    "wss://srtrelay.c-stellar.net/",
+    "wss://relayable.org/",
+    "wss://relay.nostr.band/",
+    "wss://nostr.wine/",
+    "wss://relay.nostr.moctane.com/",
+    "wss://nostr.uneu.net/",
+    "wss://yabu.me/",
+    "wss://relay.momostr.pink/",
+  ],
+  write: [
+    "wss://relay-jp.nostr.wirednet.jp/",
+    "wss://nos.lol/",
+    "wss://relay-jp.nostr.moctane.com/",
+    "wss://relay.nostr.wirednet.jp/",
+    "wss://r.kojira.io/",
+    "wss://nostr.fediverse.jp/",
+    "wss://srtrelay.c-stellar.net/",
+    "wss://nrelay-jp.c-stellar.net/",
+    "wss://relay.nostr.moctane.com/",
+    "wss://nosdrive.app/relay/",
+    "wss://yabu.me/",
+  ],
+};
 export const kind30030: EventList = {
   moji: [
     {

@@ -20,7 +20,7 @@ import Toast from "./components/modals/Toast";
 export default function App() {
   const [toastState, setToastState] = createSignal<ToastSettings>({
     open: false,
-    message: "",
+    message: <></>,
     type: "info",
   });
 
