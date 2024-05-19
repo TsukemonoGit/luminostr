@@ -1,4 +1,11 @@
-import { Card, Divider, Typography } from "@suid/material";
+import {
+  Box,
+  Card,
+  Divider,
+  Typography,
+  alpha,
+  useTheme,
+} from "@suid/material";
 import { Accessor, For, Setter, Show, createSignal } from "solid-js";
 
 import type * as Nostr from "nostr-typedef";
@@ -72,6 +79,17 @@ export default function Result({
     }
     setClickedEvent(null);
   };
+  const getFirstEventKind = () => {
+    const eventKeys = Object.keys(events());
+    if (eventKeys.length === 0) {
+      return null;
+    }
+    const firstEventList = events()[eventKeys[0]];
+    if (firstEventList.length === 0) {
+      return null;
+    }
+    return firstEventList[0].event.kind;
+  };
   return (
     <>
       <Typography
@@ -81,30 +99,65 @@ export default function Result({
         marginBottom={0}
         sx={{ alignContent: "center" }}
       >
-        Result
+        Result{" "}
+        {events() && getFirstEventKind() !== null
+          ? `kind:${getFirstEventKind()}`
+          : ""}
       </Typography>
-      <Card>
+      <Box
+        sx={{
+          justifyContent: "center",
+          display: "flex",
+          p: 1,
+          flexWrap: "wrap",
+          gap: "0.5em",
+        }}
+      >
         <For each={Object.keys(events())} fallback={<div>No items</div>}>
           {(item, index) => (
-            <div data-index={index()}>
+            <Card
+              sx={{
+                //display: "flex",
+                // flexWrap: "wrap",
+                //gap: "0.5em",
+                maxWidth: "100%",
+                p: 1,
+                bgcolor: alpha(useTheme().palette.primary.light, 0.1),
+              }}
+              data-index={index()}
+            >
+              <Show when={item !== ""}>
+                <Typography
+                  variant={"subtitle1"}
+                  sx={{ width: "100%", maxWidth: "min-content" }}
+                >
+                  {item}
+                </Typography>
+              </Show>
               <For each={events()[item]} fallback={<div>No items</div>}>
                 {(item2, index2) => (
-                  <>
+                  <Card
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      bgcolor: alpha(useTheme().palette.primary.light, 0.1),
+                      px: 1,
+                      m: 1,
+                    }}
+                    data-index={index2()}
+                  >
                     <EventItem
                       nosEvent={item2}
                       handleClickEvent={handleClickEvent}
                       handleClickPublish={handleClickPublish}
-                    />{" "}
-                    <Show when={events()[item].length > index2() + 1}>
-                      <Divider />
-                    </Show>
-                  </>
+                    />
+                  </Card>
                 )}
               </For>
-            </div>
+            </Card>
           )}
         </For>
-      </Card>
+      </Box>
       <Show when={modalSettings().open}>
         <Dynamic
           component={modalSettings().component}

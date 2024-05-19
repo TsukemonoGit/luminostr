@@ -17,6 +17,7 @@ import {
 import { extensionRelays } from "../lib/nostr/relays";
 import { testEventList } from "../lib/nostr/nostrfunc.test";
 import { EventPacket } from "rx-nostr";
+import { kind30030 } from "../lib/nostr/testData";
 
 const relayLength = [30, 60, 200];
 let userRelays: RelayList = {
@@ -142,7 +143,8 @@ export default function Content({
       //   totalRelay,
       //   menuNum() < 3 ? relayLength[menuNum()] : totalRelay.length
       // );
-      const eventList = testEventList;
+      //const eventList = testEventList;
+      const eventList = kind30030;
       console.log(eventList);
       setEvents(eventList);
     } catch (error) {
