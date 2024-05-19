@@ -5,28 +5,17 @@ import { nip19 } from "nostr-tools";
 export default function PubkeySet({
   pubkey,
   setPubkey,
+  pubkeyError,
+  nowProgress,
 }: {
   pubkey: Accessor<string>;
   setPubkey: Setter<string>;
+  pubkeyError: Accessor<boolean>;
+  nowProgress: Accessor<boolean>;
 }) {
-  const [anchorEl, setAnchorEl] = createSignal<null | HTMLElement>(null);
-  const open = () => Boolean(anchorEl());
-  const handleClose = (index: number) => {
-    console.log(index);
-    setPubkey(index.toString());
-    setAnchorEl(null);
-  };
   return (
     <>
-      <Grid
-        container
-        direction={"row"}
-        sx={{
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Grid container direction={"row"} sx={{}}>
         <Grid item xs={"auto"}>
           <Button
             variant="contained"
@@ -49,12 +38,14 @@ export default function PubkeySet({
         </Grid>
         <Grid item xs sx={{ width: "100%" }}>
           <TextField
+            error={pubkeyError()}
             sx={{ width: "100%" }}
             label="Pubkey"
             type="text"
             value={pubkey()}
             onChange={(event, value) => setPubkey(value)}
-            //     helperText={pubkey()}
+            helperText={pubkeyError() ? "Incorrect entry." : ""}
+            disabled={nowProgress()}
           />
         </Grid>
       </Grid>

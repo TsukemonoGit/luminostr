@@ -17,13 +17,15 @@ import {
 } from "@suid/material";
 import { Accessor, For, Setter, createSignal } from "solid-js";
 import { extensionRelays } from "../lib/nostr/relays";
-
+import HelpOutlineIcon from "@suid/icons-material/HelpOutline";
 export default function MenuSelect({
   menuNum,
   setMenuNum,
+  nowProgress,
 }: {
   menuNum: Accessor<number>;
   setMenuNum: Setter<number>;
+  nowProgress: Accessor<boolean>;
 }) {
   const [open, setOpen] = createSignal(false);
   const handleOpen = () => setOpen(true);
@@ -36,11 +38,11 @@ export default function MenuSelect({
       <Card
         sx={{ bgcolor: alpha(useTheme().palette.secondary.light, 0.1), p: 2 }}
       >
-        <FormControl>
+        <FormControl disabled={nowProgress()}>
           <FormLabel id="controlled-radio-buttons-group">
             Select Relay Count
-            <IconButton sx={{ fontSize: "medium" }} onClick={handleOpen}>
-              ?
+            <IconButton onClick={handleOpen}>
+              <HelpOutlineIcon />
             </IconButton>
           </FormLabel>
           <RadioGroup
@@ -95,8 +97,8 @@ export default function MenuSelect({
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Your kind:10002 relays +
-            <For each={extensionRelays} fallback={<div>Loading...</div>}>
-              {(item) => <Stack sx={{ fontSize: "sm" }}>{item}</Stack>}
+            <For each={extensionRelays.sort()} fallback={<div>Loading...</div>}>
+              {(item) => <Stack sx={{ fontSize: "small" }}>{item}</Stack>}
             </For>
             +{" "}
             <Link

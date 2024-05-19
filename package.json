@@ -4,6 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
+    "test": "vitest",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
@@ -11,11 +12,16 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@solidjs/testing-library": "^0.8.8",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^24.0.0",
     "nostr-typedef": "^0.9.0",
     "solid-devtools": "^0.30.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
-    "vite-plugin-solid": "^2.10.2"
+    "vite-plugin-solid": "^2.10.2",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "@solidjs/meta": "^0.29.4",
@@ -23,6 +29,7 @@
     "@suid/material": "^0.16.0",
     "@suid/vite-plugin": "^0.2.0",
     "nostr-tools": "^2.5.2",
+    "rx-nostr": "^2.7.3",
     "solid-js": "^1.8.17"
   }
 }

@@ -37,7 +37,11 @@ export default function App() {
       <Head />
 
       <Header />
-      <Content />
+      <Content
+        setNowProgress={setNowProgress}
+        nowProgress={nowProgress}
+        setToastState={setToastState}
+      />
       <Footer />
       <Toast handleToastClose={handleToastClose} toastState={toastState} />
       <Show when={nowProgress()}>

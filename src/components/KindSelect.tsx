@@ -12,9 +12,13 @@ import { kinds, sortedKinds } from "../lib/nostr/kinds";
 export default function KindSelect({
   kind,
   setKind,
+  kindError,
+  nowProgress,
 }: {
   kind: Accessor<string>;
   setKind: Setter<string>;
+  kindError: Accessor<boolean>;
+  nowProgress: Accessor<boolean>;
 }) {
   const [anchorEl, setAnchorEl] = createSignal<null | HTMLElement>(null);
   const open = () => Boolean(anchorEl());
@@ -24,17 +28,10 @@ export default function KindSelect({
     }
     setAnchorEl(null);
   };
+
   return (
     <>
-      <Grid
-        container
-        direction={"row"}
-        sx={{
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Grid container direction={"row"} sx={{}}>
         <Grid item xs={"auto"}>
           <Button
             sx={{ height: "56px" }}
@@ -52,6 +49,7 @@ export default function KindSelect({
         </Grid>
         <Grid item xs sx={{ width: "100%" }}>
           <TextField
+            error={kindError()}
             sx={{ width: "100%" }}
             label="Kind"
             type="number"
@@ -59,7 +57,8 @@ export default function KindSelect({
             onChange={(event, value) => {
               setKind(value);
             }}
-            //     helperText={kind()}
+            helperText={kindError() ? "Incorrect entry." : ""}
+            disabled={nowProgress()}
           />
         </Grid>
       </Grid>
