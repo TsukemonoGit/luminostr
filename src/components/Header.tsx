@@ -9,8 +9,30 @@ import {
   alpha,
   useTheme,
 } from "@suid/material";
+import AboutModal from "./modals/AboutModal";
 
-export default function Header() {
+export default function Header({
+  setModalSettings,
+}: {
+  setModalSettings: Setter<ModalSettings>;
+}) {
+  const handleClickAbout = () => {
+    setModalSettings({
+      component: AboutModal,
+      props: {
+        handleModalClose: handleModalClose,
+      },
+      open: true,
+    });
+  };
+  const handleModalClose = async (e: any) => {
+    console.log(e);
+
+    setModalSettings((prevState: ModalSettings) => ({
+      ...prevState,
+      open: false,
+    }));
+  };
   return (
     <header>
       <Stack
@@ -40,8 +62,14 @@ export default function Header() {
             >
               Luminostr
             </Typography>
-            <Button sx={{ alignContent: "center" }}>About</Button>
-            <Stack>
+            <Stack flexDirection="row">
+              <Button
+                sx={{ alignContent: "center" }}
+                onClick={handleClickAbout}
+              >
+                About
+              </Button>
+
               <LightSwitch />
             </Stack>
           </Stack>
