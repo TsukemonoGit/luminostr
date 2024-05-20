@@ -30,6 +30,7 @@ import { EventPacket } from "rx-nostr";
 import { kind30030 } from "../lib/nostr/testData";
 import { NostrEvent } from "nostr-tools";
 import { publishedJSX } from "./util/Are";
+import { kind30001 } from "../lib/nostr/testEvents30001";
 
 const relayLength = [30, 60, 200];
 let userRelays: RelayList = {
@@ -65,7 +66,10 @@ export default function Content({
     setPubkeyError(false);
     setEvents({});
   };
+  //test
 
+  setEvents(kind30001);
+  //---
   const handleClickSearch = async () => {
     reset();
 
@@ -134,7 +138,7 @@ export default function Content({
         menuNum() < 3 ? relayLength[menuNum()] : totalRelay.length
       );
       //const eventList = testEventList;
-      //const eventList = kind30030;
+      //const eventList = kind30001;
       console.log(eventList);
       setEvents(eventList);
     } catch (error) {

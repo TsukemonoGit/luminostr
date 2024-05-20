@@ -132,10 +132,7 @@ export default function Result({
               data-index={index()}
             >
               <Show when={item !== ""}>
-                <Typography
-                  variant={"subtitle1"}
-                  sx={{ width: "100%", maxWidth: "min-content" }}
-                >
+                <Typography variant={"subtitle1"} sx={{ width: "100%" }}>
                   {item}
                 </Typography>
               </Show>
