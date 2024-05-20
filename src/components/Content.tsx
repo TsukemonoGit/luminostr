@@ -68,7 +68,7 @@ export default function Content({
   };
   //test
 
-  setEvents(kind30001);
+  //setEvents(kind30001);
   //---
   const handleClickSearch = async () => {
     reset();
