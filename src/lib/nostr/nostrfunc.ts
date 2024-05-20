@@ -199,6 +199,11 @@ const processChunk = async (
       authors: [pubkey],
       until: now(),
     });
+    // console.log({
+    //   kinds: [kind],
+    //   authors: [pubkey],
+    //   until: now(),
+    // });
   });
 };
 

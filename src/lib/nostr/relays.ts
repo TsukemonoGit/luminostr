@@ -7,6 +7,8 @@ export const relaySearchRelays = [
 
   //kind:3
   "wss://relayable.org",
+  //
+  "wss://bostr.nokotaro.com",
 ];
 
 export const extensionRelays = [

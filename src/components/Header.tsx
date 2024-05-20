@@ -1,6 +1,14 @@
 import { Accessor, Setter } from "solid-js";
 import LightSwitch from "./util/LightSwitch";
-import { Container, Stack, Typography, alpha, useTheme } from "@suid/material";
+import {
+  Button,
+  Container,
+  Link,
+  Stack,
+  Typography,
+  alpha,
+  useTheme,
+} from "@suid/material";
 
 export default function Header() {
   return (
@@ -30,8 +38,9 @@ export default function Header() {
               marginBottom={0}
               sx={{ alignContent: "center" }}
             >
-              Title
+              Luminostr
             </Typography>
+            <Button sx={{ alignContent: "center" }}>About</Button>
             <Stack>
               <LightSwitch />
             </Stack>

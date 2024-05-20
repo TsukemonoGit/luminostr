@@ -10,5 +10,6 @@ export default defineConfig({
   build: {
     target: "esnext",
     outDir: "./docs",
-  },  base : "/ru-nos-iroiro-recovery/",
+  },
+  base: "/luminostr/",
 });

@@ -21,6 +21,7 @@ export default function Result({
   setNowProgress,
   nowProgress,
   publishEvent,
+  setModalSettings,
 }: //handleClickEvent,
 //handleClickPublish,
 {
@@ -29,14 +30,10 @@ export default function Result({
   setNowProgress: Setter<boolean>;
   nowProgress: Accessor<boolean>;
   publishEvent: any;
+  setModalSettings: Setter<ModalSettings>;
   // handleClickEvent: any;
   //handleClickPublish: any;
 }) {
-  const [modalSettings, setModalSettings] = createSignal<ModalSettings>({
-    open: false,
-    component: undefined,
-    props: null,
-  });
   const [clickedEvent, setClickedEvent] = createSignal<EventPacket | null>(
     null
   );
@@ -111,7 +108,7 @@ export default function Result({
       </Typography>
       <Box
         sx={{
-          justifyContent: "center",
+          // justifyContent: "center",
           display: "flex",
           p: 1,
           flexWrap: "wrap",
@@ -160,12 +157,6 @@ export default function Result({
           )}
         </For>
       </Box>
-      <Show when={modalSettings().open}>
-        <Dynamic
-          component={modalSettings().component}
-          {...modalSettings().props}
-        />
-      </Show>
     </>
   );
 }
