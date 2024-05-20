@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write
-  contents: write
+  contents: read
   pages: write
+  id-token: write
 
 concurrency:
   group: 'pages'
@@ -28,22 +28,16 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          path: '.'
       - name: Install dependencies
         run: npm install
-        working-directory: ./
-
       - name: Build
         run: npm run build
-        working-directory: ./
       - name: Setup Pages
         uses: actions/configure-pages@v3
-   
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v1
         with:
           path: './docs'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-      
