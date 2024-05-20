@@ -40,8 +40,7 @@ export const extensionRelays = [
   "wss://nostr.einundzwanzig.space",
   "wss://relay.nostr.net",
   //
-  "wss://nostr.oxtr.dev",
-  "wss://nostr.sathoarder.com",
+  "wss://bostr.nokotaro.com",
 ];
 
 //feedback用のリレー
