@@ -34,15 +34,13 @@ export default function About(props: {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "80vw",
-          maxWidth: "800px",
-          height: "70vh",
+          maxWidth: "600px",
+          width: "90vw",
+          maxHeight: "70vh",
           bgcolor: theme.palette.background.paper,
           border: "2px solid #000",
           boxShadow: "24px",
           p: 4,
-
-          maxHeight: "70vh",
           borderRadius: 2,
         }}
       >
@@ -51,7 +49,7 @@ export default function About(props: {
           特定のkindの置換可能（replaceable）イベントをいろんなリレーから探しだして、特定の時点でのイベントで上書きする（現在時刻で再書込みする）
         </Typography>
         <Typography variant="body1" sx={{ m: 1 }}>
-          また、手持ちのローカルJSONファイルで上書きする
+          また、手持ちのローカルJSONファイルで上書きするためのツール
         </Typography>
       </Box>
     </Modal>

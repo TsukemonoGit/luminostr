@@ -361,6 +361,7 @@ export default function Content({
                 variant="contained"
                 component="span"
                 sx={{ width: "100%", my: 2, py: 2, whiteSpace: "nowrap" }}
+                disabled={nowProgress()}
               >
                 <FileUpload /> Upload Json
               </Button>

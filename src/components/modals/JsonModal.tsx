@@ -79,7 +79,7 @@ export default function JsonModal(props: {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "80vw",
+          width: "90vw",
           maxWidth: "800px",
           height: "70vh",
           bgcolor: theme.palette.background.paper,
