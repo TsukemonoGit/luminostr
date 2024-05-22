@@ -41,7 +41,11 @@ export default function App() {
     <>
       <Head />
 
-      <Header setModalSettings={setModalSettings} />
+      <Header
+        setModalSettings={setModalSettings}
+        setToastState={setToastState}
+        setNowProgress={setNowProgress}
+      />
       <Content
         setNowProgress={setNowProgress}
         nowProgress={nowProgress}

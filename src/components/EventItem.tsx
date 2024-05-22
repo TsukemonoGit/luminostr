@@ -2,6 +2,7 @@ import { Grid, Typography } from "@suid/material";
 import Button from "@suid/material/Button";
 import { EventPacket } from "rx-nostr";
 import type * as Nostr from "nostr-typedef";
+import { useLanguage } from "./util/useLanguage";
 export default function EventItem(props: {
   nosEvent: EventPacket;
   handleClickEvent: (arg0: EventPacket) => void;
@@ -9,7 +10,7 @@ export default function EventItem(props: {
   handleClickPublish: (arg0: EventPacket) => void;
 }) {
   const { nosEvent, handleClickEvent, handleClickPublish } = props;
-
+  const isJapanese = useLanguage();
   return (
     <Grid container spacing={1} sx={{ my: 0.1 }}>
       <Grid
@@ -56,7 +57,7 @@ export default function EventItem(props: {
             }}
             onClick={() => handleClickEvent(nosEvent)}
           >
-            もっとみる
+            {isJapanese() ? "もっとみる" : "See more"}
           </Button>
         </Grid>
       </Grid>
