@@ -52,7 +52,7 @@ export default function App() {
         setToastState={setToastState}
         setModalSettings={setModalSettings}
       />
-      <Footer />
+      {/* <Footer /> */}
       <Toast handleToastClose={handleToastClose} toastState={toastState} />
       <Show when={nowProgress()}>
         <CircularProgress
