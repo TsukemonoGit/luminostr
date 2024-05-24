@@ -27,7 +27,7 @@ export default function Header({
   setToastState: Setter<ToastSettings>;
   setNowProgress: Setter<boolean>;
 }) {
-  const isJapanese = useLanguage();
+  const [, , isJapanese] = useLanguage();
   const handleClickAbout = () => {
     setModalSettings({
       component: AboutModal,

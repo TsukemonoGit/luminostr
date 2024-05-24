@@ -22,7 +22,7 @@ export default function About(props: {
   nosEvent: Accessor<EventPacket | null>;
 }) {
   const theme = useTheme();
-  const isJapanese = useLanguage();
+  const [, , isJapanese] = useLanguage();
   const aboutText = () => {
     return (
       <Switch>

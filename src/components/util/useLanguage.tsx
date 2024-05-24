@@ -1,9 +1,8 @@
 // useLanguage.tsx
-import { createSignal } from "solid-js";
-
+import { createMemo, createSignal } from "solid-js";
 export function useLanguage() {
-  const [isJapanese, setIsJapanese] = createSignal(
-    navigator.language.startsWith("ja")
-  );
-  return isJapanese;
+  const [lang, setLang] = createSignal(navigator.language || "en");
+  const isJapanese = createMemo(() => lang().startsWith("ja"));
+  document.documentElement.lang = lang();
+  return [lang, setLang, isJapanese] as const;
 }

@@ -11,6 +11,7 @@ import {
 } from "@suid/material";
 import { createMemo } from "solid-js";
 import LayoutContext, { createLayoutMutable } from "./LayoutContext";
+
 const drawerWidth = 240;
 const context = createLayoutMutable({
   drawer: {

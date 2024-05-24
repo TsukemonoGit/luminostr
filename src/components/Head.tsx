@@ -2,7 +2,7 @@ import { Link, Meta, MetaProvider, Title } from "@solidjs/meta";
 import { useLanguage } from "./util/useLanguage";
 
 export default function Head() {
-  const isJapanese = useLanguage();
+  const [, , isJapanese] = useLanguage();
 
   return (
     <MetaProvider>
