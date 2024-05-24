@@ -1,20 +1,9 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  CssBaseline,
-  ThemeProvider,
-  createPalette,
-  createTheme,
-  styled,
-  useMediaQuery,
-  useTheme,
-} from "@suid/material";
-import { Show, createEffect, createMemo, createSignal } from "solid-js";
-import Head from "./components/Head";
+import { CircularProgress } from "@suid/material";
+import { Show, createSignal } from "solid-js";
+//import Head from "./components/Head";
 import Header from "./components/Header";
 import Content from "./components/Content";
-import Footer from "./components/Footer";
+//import Footer from "./components/Footer";
 import Toast from "./components/modals/Toast";
 import { Dynamic } from "solid-js/web";
 
@@ -39,7 +28,7 @@ export default function App() {
   });
   return (
     <>
-      <Head />
+      {/* <Head /> */}
 
       <Header
         setModalSettings={setModalSettings}
