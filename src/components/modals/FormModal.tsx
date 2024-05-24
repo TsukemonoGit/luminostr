@@ -21,7 +21,7 @@ export default function FormModal(props: {
   const [name, setName] = createSignal("");
   const [message, setMessage] = createSignal("");
   const [error, setError] = createSignal(false);
-  const isJapanese = useLanguage();
+  const [, , isJapanese] = useLanguage();
   const MAX_MESSAGE_LENGTH = 400; // メッセージの最大長
 
   const handleClickSend = async () => {

@@ -10,7 +10,7 @@ export default function EventItem(props: {
   handleClickPublish: (arg0: EventPacket) => void;
 }) {
   const { nosEvent, handleClickEvent, handleClickPublish } = props;
-  const isJapanese = useLanguage();
+  const [, , isJapanese] = useLanguage();
   return (
     <Grid container spacing={1} sx={{ my: 0.1 }}>
       <Grid
