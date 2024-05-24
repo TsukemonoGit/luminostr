@@ -1,11 +1,11 @@
-import { Link, Meta, MetaProvider, Title } from "@solidjs/meta";
+import { Link, Meta, Title } from "@solidjs/meta";
 import { useLanguage } from "./util/useLanguage";
 
 export default function Head() {
   const [, , isJapanese] = useLanguage();
 
   return (
-    <MetaProvider>
+    <>
       <Title>Luminostr</Title>
       <Link rel="icon" href="./favicon.svg" />
       <Meta property="og:type" content="website" />
@@ -22,6 +22,6 @@ export default function Head() {
             : "Replacementable Event Recovery Tool"
         }`}
       />
-    </MetaProvider>
+    </>
   );
 }
