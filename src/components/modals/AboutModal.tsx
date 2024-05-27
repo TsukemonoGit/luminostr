@@ -1,4 +1,3 @@
-//JsonModal.tsx
 import {
   Modal,
   Box,

@@ -3,6 +3,7 @@ import {
   RxNostr,
   createRxBackwardReq,
   createRxNostr,
+  createTie,
   getSignedEvent,
   nip07Signer,
   now,
@@ -22,6 +23,10 @@ export interface RelayList {
 export interface EventList {
   [id: string]: EventPacket[];
 }
+const [tie, tieMap] = createTie();
+export function getRelaysById(id: string): string[] {
+  return Array.from(tieMap.get(id) || []);
+}
 export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   console.log(pubkey);
   let res: RelayList = { read: [], write: [] };
@@ -38,7 +43,7 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   rxNostr.setDefaultRelays(relaySearchRelays);
 
   const rxReq = createRxBackwardReq("sup");
-  const observable = rxNostr.use(rxReq).pipe(uniq(), verify());
+  const observable = rxNostr.use(rxReq).pipe(tie, uniq(), verify());
 
   await new Promise<RelayList>((resolve, reject) => {
     const handleTimeout = () => {
@@ -159,7 +164,7 @@ const processChunk = async (
   rxNostr.setDefaultRelays(chunkRelays);
 
   const rxReq = createRxBackwardReq("sub");
-  const observable = rxNostr.use(rxReq).pipe(uniq(), verify());
+  const observable = rxNostr.use(rxReq).pipe(tie, uniq(), verify());
 
   await new Promise<void>((resolve, reject) => {
     const handleTimeout = () => {

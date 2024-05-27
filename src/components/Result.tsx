@@ -9,7 +9,7 @@ import {
 import { Accessor, For, Setter, Show, createSignal } from "solid-js";
 
 import type * as Nostr from "nostr-typedef";
-import { EventList, RelayList } from "../lib/nostr/nostrfunc";
+import { EventList, RelayList, getRelaysById } from "../lib/nostr/nostrfunc";
 import EventItem from "./EventItem";
 import { EventPacket } from "rx-nostr";
 import { Dynamic } from "solid-js/web";
@@ -62,6 +62,7 @@ export default function Result({
       props: {
         nosEvent: clickedEvent,
         handleModalClose: handleModalClose,
+        relays: getRelaysById(nosEvent.event.id),
       },
       open: true,
     });

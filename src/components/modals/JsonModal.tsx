@@ -8,6 +8,7 @@ import {
   Link,
   Typography,
   Stack,
+  Card,
 } from "@suid/material";
 import { EventPacket } from "rx-nostr";
 import { Accessor, Show } from "solid-js";
@@ -19,13 +20,14 @@ export default function JsonModal(props: {
     | ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void)
     | undefined;
   nosEvent: Accessor<EventPacket | null>;
+  relays: string[];
 }) {
   const url = (): string => {
     const eventId = props.nosEvent()?.event.id;
     const seenRelay = props.nosEvent()?.from;
     const nevent = nip19.neventEncode({
       id: eventId ?? "",
-      relays: [seenRelay ?? ""],
+      relays: props.relays,
       author: props.nosEvent()?.event.pubkey,
       kind: props.nosEvent()?.event.kind,
     });
@@ -81,13 +83,14 @@ export default function JsonModal(props: {
           transform: "translate(-50%, -50%)",
           width: "90vw",
           maxWidth: "800px",
-          height: "70vh",
+
           bgcolor: theme.palette.background.paper,
           border: "2px solid #000",
           boxShadow: "24px",
           p: 4,
 
-          maxHeight: "70vh",
+          maxHeight: "90vh",
+          overflowY: "auto",
           borderRadius: 2,
         }}
       >
@@ -128,7 +131,7 @@ export default function JsonModal(props: {
               whiteSpace: "pre-wrap",
               wordBreak: "break-word",
 
-              height: "60%",
+              height: "40vh",
               py: 1,
               overflowY: "auto",
               border: 1,
@@ -152,7 +155,6 @@ export default function JsonModal(props: {
                 flexDirection: "column",
               }}
             >
-              <div>seen on: {props.nosEvent()?.from}</div>
               <Show
                 when={props.nosEvent() && props.nosEvent()?.from !== "Local"}
               >
@@ -166,6 +168,12 @@ export default function JsonModal(props: {
                   Open in NostViewstr
                 </Link>
               </Show>
+              <Card sx={{ p: 1, marginTop: 2 }}>
+                <Stack sx={{ textAlign: "end" }}>seen on</Stack>
+                <Stack sx={{ textAlign: "end", fontSize: "small" }}>
+                  {props.relays.join(", ")}
+                </Stack>
+              </Card>
             </Grid>
           </Grid>
         </Grid>
