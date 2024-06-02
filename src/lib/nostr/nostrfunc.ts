@@ -16,6 +16,7 @@ import { generateSecretKey, getPublicKey, nip04, nip19 } from "nostr-tools";
 import type * as Nostr from "nostr-typedef";
 import { EventParameters } from "nostr-typedef";
 export interface RelayList {
+  pubkey: string;
   read: string[];
   write: string[];
 }
@@ -29,7 +30,7 @@ export function getRelaysById(id: string): string[] {
 }
 export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   console.log(pubkey);
-  let res: RelayList = { read: [], write: [] };
+  let res: RelayList = { read: [], write: [], pubkey: pubkey };
   let tmp_event: {
     kind3: Nostr.Event | undefined;
     kind10002: Nostr.Event | undefined;
@@ -124,6 +125,7 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
       console.log(error);
     }
   }
+  rxNostr.dispose();
   return res;
 };
 

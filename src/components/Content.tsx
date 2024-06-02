@@ -27,7 +27,7 @@ import {
   isNostrEvent,
   publishEventToRelay,
 } from "../lib/nostr/nostrfunc";
-import { extensionRelays } from "../lib/nostr/relays";
+import { defaultRelay, extensionRelays } from "../lib/nostr/relays";
 import { testEventList } from "../lib/nostr/nostrfunc.test";
 import { EventPacket } from "rx-nostr";
 import { kind30030 } from "../lib/nostr/testData";
@@ -40,6 +40,7 @@ const relayLength = [30, 60, 200];
 let userRelays: RelayList = {
   read: [],
   write: [],
+  pubkey: "",
 };
 let pubHex: string;
 let nsecArray: Uint8Array;
@@ -121,8 +122,19 @@ export default function Content({
     // console.log(pubHex);
     //   console.log(kindNum);
     try {
-      if (userRelays.read.length <= 0) {
+      if (userRelays.pubkey !== pubHex || userRelays.read.length <= 0) {
         userRelays = await getUserRelayList(pubHex);
+        if (userRelays.read.length <= 0) {
+          console.log(userRelays);
+          setToastState({
+            open: true,
+            message: "Failed to get your relays. so set default relays",
+            type: "warning",
+          });
+
+          userRelays.read = defaultRelay;
+          userRelays.write = defaultRelay;
+        }
       }
     } catch (error) {
       console.log(error);
@@ -136,6 +148,7 @@ export default function Content({
         ...apiRelays,
       ])
     );
+
     try {
       const eventList = await getEventList(
         pubHex,
@@ -169,16 +182,19 @@ export default function Content({
         nsecArray = res.nsecArray;
       }
     }
+
     if (pubHex && userRelays.write.length <= 0) {
       userRelays = await getUserRelayList(pubHex);
+
       if (userRelays.write.length <= 0) {
+        console.log(userRelays);
         setToastState({
           open: true,
-          message: "Failed to get your relays",
-          type: "error",
+          message: "Failed to get your relays. so set default relays",
+          type: "warning",
         });
         setNowProgress(false);
-        return;
+        userRelays.write = defaultRelay;
       }
     }
 

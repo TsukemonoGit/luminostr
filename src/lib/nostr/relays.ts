@@ -1,3 +1,5 @@
+import { RelayList } from "./nostrfunc";
+
 export const relaySearchRelays = [
   //kind 0 (ユーザのプロフィール) と kind 10002 (利用中のリレーリスト) 特化
   "wss://directory.yabu.me",
@@ -51,4 +53,9 @@ export const feedbackRelay = [
   "wss://relay.nostr.wirednet.jp",
   "wss://relayable.org",
   "wss://relay.nostr.band/",
+];
+export const defaultRelay = [
+  "wss://nos.lol",
+  "wss://relay.nostr.band",
+  "wss://relayable.org",
 ];
