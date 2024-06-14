@@ -309,6 +309,9 @@ export default function Content({
   return (
     <main>
       <Container maxWidth="lg" sx={{ marginTop: "4rem" }}>
+        <Typography variant="h5" component="div" sx={{ color: "gray" }}>
+          Nostr Replaceable Event Recovery Tool
+        </Typography>
         <Grid container gap={2}>
           <Grid item xs={12} sm>
             <Stack
