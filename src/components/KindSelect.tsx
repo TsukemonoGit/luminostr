@@ -6,8 +6,9 @@ import {
   TextField,
   Typography,
 } from "@suid/material";
-import { Accessor, For, Setter, createSignal } from "solid-js";
-import { kinds, sortedKinds } from "../lib/nostr/kinds";
+import { Accessor, For, Setter, Show, createSignal } from "solid-js";
+import { sortedLocaleKinds } from "../lib/nostr/kinds";
+import { useLanguage } from "./util/useLanguage";
 
 export default function KindSelect({
   kind,
@@ -20,6 +21,7 @@ export default function KindSelect({
   kindError: Accessor<boolean>;
   nowProgress: Accessor<boolean>;
 }) {
+  const [, , isJapanese] = useLanguage();
   const [anchorEl, setAnchorEl] = createSignal<null | HTMLElement>(null);
   const open = () => Boolean(anchorEl());
   const handleClose = (index: number) => {
@@ -70,11 +72,14 @@ export default function KindSelect({
         MenuListProps={{ "aria-labelledby": "basic-button" }}
         sx={{ height: "24em" }}
       >
-        <For each={Array.from(sortedKinds)}>
-          {([number, string]) => (
+        <For each={sortedLocaleKinds(isJapanese())}>
+          {([number, { ja, en }]) => (
             <>
               <MenuItem onClick={() => handleClose(number)}>
-                {string} -
+                <Show when={isJapanese()} fallback={<>{en}</>}>
+                  {ja}
+                </Show>{" "}
+                -
                 <Typography variant="caption" marginLeft={1}>
                   {" "}
                   kind: {number}
