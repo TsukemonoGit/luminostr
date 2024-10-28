@@ -4,11 +4,11 @@ import {
   createRxBackwardReq,
   createRxNostr,
   createTie,
+  createUniq,
   getSignedEvent,
   nip07Signer,
   now,
   seckeySigner,
-  uniq,
   verify,
 } from "rx-nostr";
 import { extensionRelays, feedbackRelay, relaySearchRelays } from "./relays";
@@ -20,6 +20,17 @@ export interface RelayList {
   read: string[];
   write: string[];
 }
+// イベントID に基づいて重複を排除する
+const keyFn = (packet: EventPacket): string => packet.event.id;
+
+const onCache = (packet: EventPacket): void => {
+  //console.log(`${packet.event.id} を初めて観測しました`);
+};
+const onHit = (packet: EventPacket): void => {
+  //  console.log(`${packet.event.id} はすでに観測されています`);
+};
+
+const [uniq, uniqIds] = createUniq(keyFn, { onCache, onHit });
 
 export interface EventList {
   [id: string]: EventPacket[];
@@ -42,9 +53,10 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   const timeoutMillis: number = 2000;
   const rxNostr = createRxNostr();
   rxNostr.setDefaultRelays(relaySearchRelays);
-
+  //uniqリセット
+  uniqIds.clear();
   const rxReq = createRxBackwardReq("sup");
-  const observable = rxNostr.use(rxReq).pipe(tie, uniq(), verify());
+  const observable = rxNostr.use(rxReq).pipe(tie, uniq, verify());
 
   await new Promise<RelayList>((resolve, reject) => {
     const handleTimeout = () => {
@@ -141,7 +153,8 @@ export const getEventList = async (
   const chunkSize = 30; // 一度に接続するrelayの数
   const uniqueRelays = readRelayList.slice(0, maxRelayLength);
   const totalChunks = Math.ceil(uniqueRelays.length / chunkSize);
-
+  //uniqリセット
+  uniqIds.clear();
   for (let i = 0; i < totalChunks; i++) {
     const startIdx = i * chunkSize;
     const endIdx = Math.min((i + 1) * chunkSize, uniqueRelays.length);
@@ -166,7 +179,7 @@ const processChunk = async (
   rxNostr.setDefaultRelays(chunkRelays);
 
   const rxReq = createRxBackwardReq("sub");
-  const observable = rxNostr.use(rxReq).pipe(tie, uniq(), verify());
+  const observable = rxNostr.use(rxReq).pipe(tie, uniq, verify());
 
   await new Promise<void>((resolve, reject) => {
     const handleTimeout = () => {
