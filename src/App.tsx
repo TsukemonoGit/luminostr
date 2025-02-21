@@ -6,6 +6,7 @@ import Content from "./components/Content";
 //import Footer from "./components/Footer";
 import Toast from "./components/modals/Toast";
 import { Dynamic } from "solid-js/web";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [toastState, setToastState] = createSignal<ToastSettings>({
@@ -41,7 +42,7 @@ export default function App() {
         setToastState={setToastState}
         setModalSettings={setModalSettings}
       />
-      {/* <Footer /> */}
+      <Footer />
       <Toast handleToastClose={handleToastClose} toastState={toastState} />
       <Show when={nowProgress()}>
         <CircularProgress
@@ -56,6 +57,7 @@ export default function App() {
           {...modalSettings().props}
         />
       </Show>
+
     </>
   );
 }
