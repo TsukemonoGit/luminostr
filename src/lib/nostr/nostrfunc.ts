@@ -5,13 +5,11 @@ import {
   createRxNostr,
   createTie,
   createUniq,
-  getSignedEvent,
   nip07Signer,
   now,
-  seckeySigner,
-  verify,
 } from "rx-nostr";
-import { extensionRelays, feedbackRelay, relaySearchRelays } from "./relays";
+import { verifier, seckeySigner } from "rx-nostr-crypto";
+import { feedbackRelay, relaySearchRelays } from "./relays";
 import { generateSecretKey, getPublicKey, nip04, nip19 } from "nostr-tools";
 import type * as Nostr from "nostr-typedef";
 import { EventParameters } from "nostr-typedef";
@@ -51,12 +49,12 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   };
   let timeoutId: number | undefined;
   const timeoutMillis: number = 2000;
-  const rxNostr = createRxNostr();
+  const rxNostr = createRxNostr({ verifier });
   rxNostr.setDefaultRelays(relaySearchRelays);
   //uniqリセット
   uniqIds.clear();
   const rxReq = createRxBackwardReq("sup");
-  const observable = rxNostr.use(rxReq).pipe(tie, uniq, verify());
+  const observable = rxNostr.use(rxReq).pipe(tie, uniq);
 
   await new Promise<RelayList>((resolve, reject) => {
     const handleTimeout = () => {
@@ -175,11 +173,11 @@ const processChunk = async (
   res: EventList,
   timeoutMillis: number
 ) => {
-  const rxNostr = createRxNostr();
+  const rxNostr = createRxNostr({ verifier });
   rxNostr.setDefaultRelays(chunkRelays);
 
   const rxReq = createRxBackwardReq("sub");
-  const observable = rxNostr.use(rxReq).pipe(tie, uniq, verify());
+  const observable = rxNostr.use(rxReq).pipe(tie, uniq);
 
   await new Promise<void>((resolve, reject) => {
     const handleTimeout = () => {
@@ -292,9 +290,7 @@ export async function publishEventToRelay(
   const signer =
     nsec !== undefined ? seckeySigner(nip19.nsecEncode(nsec)) : nip07Signer();
   //console.log(signer);
-  const rxNostr = createRxNostr({
-    signer: signer,
-  });
+  const rxNostr = createRxNostr({ verifier, signer: signer });
 
   const publishEvent = await signer.signEvent(eventParams); //error
   console.log("signedEvent:", publishEvent);
@@ -420,9 +416,7 @@ export async function sendMessage(message: string, pubhex: string) {
     };
     const signer = seckeySigner(nip19.nsecEncode(sk));
     //console.log(signer);
-    const rxNostr = createRxNostr({
-      signer: signer,
-    });
+    const rxNostr = createRxNostr({ verifier, signer: signer });
     try {
       const result = await sendEventToRelay(rxNostr, ev, feedbackRelay);
 
