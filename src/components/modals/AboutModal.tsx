@@ -16,8 +16,8 @@ import { useLanguage } from "../util/useLanguage";
 
 export default function About(props: {
   handleModalClose:
-    | ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void)
-    | undefined;
+  | ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void)
+  | undefined;
   nosEvent: Accessor<EventPacket | null>;
 }) {
   const theme = useTheme();
@@ -120,11 +120,12 @@ export default function About(props: {
               />
             </IconButton>
             <IconButton
-              id="nostr-zap-target"
-              aria-label="Zapボタン"
-              data-npub="npub1sjcvg64knxkrt6ev52rywzu9uzqakgy8ehhk8yezxmpewsthst6sw3jqcw"
-              data-relays="wss://nostr.mutinywallet.com,wss://relayable.org,wss://nos.lol,wss://nostr.wine,wss://relay.nostr.band,wss://yabu.me"
-              data-note-id="note160q4w6ar27qjpwrfxhnwv5ra3hpj552m230kau4vg5sf3d9das3q0hvglm"
+              onClick={() => {
+                (
+                  document.querySelector('button[data-npub]') as HTMLButtonElement
+                )?.click();
+              }}
+
             >
               <Stack
                 innerHTML={lightningIcon2}
