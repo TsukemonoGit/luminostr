@@ -7,7 +7,6 @@ import {
   Card,
   useTheme,
   alpha,
-
   Box,
   Modal,
   Typography,
@@ -64,9 +63,13 @@ export default function MenuSelect({
             <FormControlLabel
               value={2}
               control={<Radio />}
-              label="about 200 relay "
+              label="about 200 relay"
             />
-            <FormControlLabel value={3} control={<Radio />} label="MAX" />
+            <FormControlLabel
+              value={3}
+              control={<Radio />}
+              label="about 400 relay"
+            />
           </RadioGroup>
         </FormControl>
       </Card>
@@ -101,15 +104,7 @@ export default function MenuSelect({
             <For each={extensionRelays.sort()} fallback={<div>Loading...</div>}>
               {(item) => <Stack sx={{ fontSize: "small" }}>{item}</Stack>}
             </For>
-            +{" "}
-            <Link
-              href="https://api.nostr.watch/v1/online"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              https://api.nostr.watch/v1/online
-            </Link>{" "}
-            relays
+            + NIP-66 relays
           </Typography>
         </Box>
       </Modal>

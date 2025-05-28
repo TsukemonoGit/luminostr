@@ -234,8 +234,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostrja-kari.heguro.com",
@@ -333,8 +331,6 @@ export const kind30001: EventList = {
         ],
         sig: "e84823a05ace7a572ace5283e5e6dabd03d414b690cc0bb5433ad07d2355f4f512c6ab8d48c49618cbdfae543764a5f8d47daeb8e2b733805c20d0c92550fcbe",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   aretati: [
@@ -738,8 +734,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   bookmark: [
@@ -4287,8 +4281,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostr-02.yakihonne.com",
@@ -7826,8 +7818,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   bookmark2: [
@@ -9215,8 +9205,6 @@ export const kind30001: EventList = {
         ],
         sig: "80c983666325034a58405841d91180d3ec48fba96163726662f303dd99aba8990fb70705a2bb1a9a43f125794d5d3e5225d5093a98113c1bdd6715947c65fc06",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   bookmark5: [
@@ -11948,8 +11936,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostrja-kari.heguro.com",
@@ -14607,8 +14593,6 @@ export const kind30001: EventList = {
         ],
         sig: "d32f36c4bfba2bb3f007c97ea1a79570ead321300519398adad6042df9e3e7b29a735a86ff4862eabddc912c3228b0fa0c127a7e9822eb8ac00edcd481a7be14",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   bookmark6: [
@@ -15368,8 +15352,6 @@ export const kind30001: EventList = {
         ],
         sig: "d204184550b60c0853aeede5376ef349cc9ae2692543dea8c5a8c9ea0ef26cd835b23dfed4acafcc0a8eecc76f4a73c760a398873baa113b3f049f5b2b4dc337",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://bostr.nokotaro.com",
@@ -15943,8 +15925,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   illusttati: [
@@ -16732,8 +16712,6 @@ export const kind30001: EventList = {
         ],
         sig: "f921aee069786b4f6082a1e35091735b6551873ba43ca648a1584189d82ec1a485a565797e44ed47a2a3f7bf7e6290bd13c4a723888e46e90c1ca1f7e66a0daf",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://bostr.nokotaro.com",
@@ -17383,8 +17361,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   pin: [
@@ -17460,8 +17436,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostr-relay.nokotaro.com",
@@ -17519,8 +17493,6 @@ export const kind30001: EventList = {
         ],
         sig: "4ace596a4f95e262ba46634a6f45ae7e9d03b1bf6d693a1d2f8db549a980576c5c75cabb83141a5442a686150bd4d823c9fcb1c74347cb179e299b3ce1ce1deb",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   あのがぞう: [
@@ -17812,8 +17784,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostrja-kari.heguro.com",
@@ -18071,8 +18041,6 @@ export const kind30001: EventList = {
         ],
         sig: "f302b93bf71043ab6affac8bc81eb30e1e5bf95e6d0e6de358e9c05135aee6c26ca3cf10c38bdbdb952e24b33465f5292fd4f24bb21b5f7b088798abe99fd65e",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   おいしいはなし: [
@@ -19396,8 +19364,6 @@ export const kind30001: EventList = {
         ],
         sig: "379447da37c138e92b1ccd913aa9b6af117ce14c7a712a7db3213565aa23566b95bad036f16feb7eadd948da82c0ca5c8b5d0b9aedbad7bc132408bea98209a9",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nrelay.c-stellar.net",
@@ -19951,8 +19917,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   お役立ち: [
@@ -21188,8 +21152,6 @@ export const kind30001: EventList = {
         ],
         sig: "c6e455248d01b21aa0a712daea3fb6f48190ac6a309a3cbd8489c6159d01be355a470574748e90a469c6cc887a1edba03770471c7428357e32d43e29be3ed712",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://bostr.nokotaro.com",
@@ -21991,8 +21953,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostrja-kari.heguro.com",
@@ -22722,8 +22682,6 @@ export const kind30001: EventList = {
         ],
         sig: "8e718da37130e9e654414e159d9d7a072420194e19ef70425c2a7f83da5110e1865f8ee4f40f5fec63e0d9314d0875f4bd8f671531ff88fd54231d8d3b8e56b3",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   ｾｷｭﾘﾃｨｿﾌﾄのはなし: [
@@ -23167,8 +23125,6 @@ export const kind30001: EventList = {
         ],
         sig: "d9b54b5f81e2caaaeded90863c6cd5e32ee528c6dcd088ec76397c1d1d5fbf76e4a5a293fe6672ae89a0f58491eacafa6896ca6781cc1f180f9c72acd0e65a34",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   ツール: [
@@ -24556,8 +24512,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://bostr.nokotaro.com",
@@ -25519,8 +25473,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostrja-kari.heguro.com",
@@ -26442,8 +26394,6 @@ export const kind30001: EventList = {
         ],
         sig: "6a21d4af97beb61bee41bb4c108e0233fdb863a273813a7098d16a475061b19c5bea4268f9b76fbe83c9156b1ca5a6920492f4ba6e4019d4d310a4bfbfbe15da",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   てｓてｓ: [
@@ -26475,8 +26425,6 @@ export const kind30001: EventList = {
         tags: [["d", "てｓてｓ"]],
         sig: "0f5f86f568024df16c4b9dbdfa0b29ca4f9075a1d7c61e45044484adb97be402f61ea3abfc9b292e89a39bcf5b2fb56d276f2b6ed1762c524125bf9d4e273959",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   てすと: [
@@ -27384,8 +27332,6 @@ export const kind30001: EventList = {
         ],
         sig: "c2f892241cad98ea02a551625346c4999b6ecd50c895ab29923d476c038572c9dfe8007c44afe23d0c834008353feb2c1b2f80307f01f89f8fe5fd64e6944ccb",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nrelay.c-stellar.net",
@@ -27971,8 +27917,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   ぴょん: [
@@ -28592,8 +28536,6 @@ export const kind30001: EventList = {
         ],
         sig: "ad69285fc1cfd5d196202f79780e2e46e59eff55190e9a2e1bbc9bd2512411f2f976530426000cbafc2ff1e80431f7ed43be84555ad3b858c3eee1a7f09ebd76",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nrelay.c-stellar.net",
@@ -29075,8 +29017,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   らずぴ: [
@@ -30144,8 +30084,6 @@ export const kind30001: EventList = {
         ],
         sig: "308f05ef80ede6200b9cb03ae4278d1512ace340956af373955a6b942ba9f01d950569a0f8d10218c3517cbff36bedfe8b98da631e84b52e4796c465f5b1f41e",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://bostr.nokotaro.com",
@@ -31067,8 +31005,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostrja-kari.heguro.com",
@@ -31918,8 +31854,6 @@ export const kind30001: EventList = {
         ],
         sig: "e5291c42e1324831e74784cf0da03e89ad28c2d723f39678b9d79d9cbf7dd4f7c6007e0d5696b6098232a5f30baef9fd3c3bbd3e2c125a7fe328cd9a9ffc4244",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   観光情報: [
@@ -32219,8 +32153,6 @@ export const kind30001: EventList = {
         ],
         sig: "9c81c4f3df44c00a707adac67642d2d2f990782b460e90aec97cb0691b9d0cc3f971cc7eb3b8ff48a782db2c7bbceb3a8581cf655835996c3c4ee0981a4010d4",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   "本・読み物": [
@@ -33208,8 +33140,6 @@ export const kind30001: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
 };

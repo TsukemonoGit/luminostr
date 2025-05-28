@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from "@suid/material";
-import { Accessor,  Setter, createSignal } from "solid-js";
+import { Accessor, Setter, createSignal } from "solid-js";
 import KindSelect from "./KindSelect";
 import PubkeySet from "./PubkeySet";
 import MenuSelect from "./MenuSelect";
@@ -18,6 +18,7 @@ import {
   RelayList,
   checkPubkey,
   getEventList,
+  getNIP66Relays,
   getOnlineRelays,
   getUserRelayList,
   isNostrEvent,
@@ -29,7 +30,6 @@ import { NostrEvent } from "nostr-tools";
 import { publishedJSX } from "./util/Are";
 import { FileUpload } from "@suid/icons-material";
 
-const relayLength = [30, 60, 200];
 let userRelays: RelayList = {
   read: [],
   write: [],
@@ -68,6 +68,9 @@ export default function Content({
   };
   //test
 
+  // menuごとの目標リレー数設定 //つながらないリレーとかあって減るから
+  const targetCounts = [30, 80, 240, 440];
+
   //setEvents(kind30001);
   //---
   const handleClickSearch = async () => {
@@ -89,11 +92,20 @@ export default function Content({
     if (res?.nsecArray) {
       nsecArray = res.nsecArray;
     }
-    if (menuNum() > 0 && apiRelays.length <= 0) {
+
+    if (menuNum() > 0 && apiRelays.length < targetCounts[menuNum()]) {
       try {
-        const tmpApiRelays = await getOnlineRelays();
-        if (tmpApiRelays.length > 0) {
-          apiRelays = tmpApiRelays;
+        const visitedRelays =
+          apiRelays.length > 0 ? new Set(apiRelays) : new Set(extensionRelays);
+        console.log("visitedRelays:", visitedRelays.size);
+        const newRelays = await getNIP66Relays(
+          targetCounts[menuNum()],
+          visitedRelays
+        );
+        console.log("newRelays:", newRelays.length);
+        if (newRelays.length > apiRelays.length) {
+          apiRelays = Array.from(new Set([...apiRelays, ...newRelays]));
+          console.log("Updated apiRelays:", apiRelays);
         }
       } catch (error) {
         console.log("failed to get online relays");
@@ -147,7 +159,7 @@ export default function Content({
         pubHex,
         kindNum,
         totalRelay,
-        menuNum() < 3 ? relayLength[menuNum()] : totalRelay.length
+        menuNum() < 3 ? targetCounts[menuNum()] : totalRelay.length
       );
       //const eventList = testEventList;
       //const eventList = kind30001;
