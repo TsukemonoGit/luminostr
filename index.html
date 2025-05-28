@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head prefix="og: https://ogp.me/ns#">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+      rel="stylesheet"
+    />
+    <title>Luminostr</title>
+    <link rel="icon" href="./favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Luminostr" />
+    <meta property="og:description" content="Event Recovery Tool" />
+  </head>
 
-<head prefix="og: https://ogp.me/ns#">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" />
-  <title>Luminostr</title>
-  <link rel="icon" href="./favicon.svg" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Luminostr" />
-  <meta property="og:description" content="Event Recovery Tool" />
-  <meta property="og:image" content="./favicon.svg" />
-</head>
-
-<body>
-  <div id="root"></div>
-  <button style="display:none" id="nostr-zap-target" aria-label="Zapボタン"
-    data-npub="npub1sjcvg64knxkrt6ev52rywzu9uzqakgy8ehhk8yezxmpewsthst6sw3jqcw"
-    data-naddr="naddr1qqxnzdenxgcrqv3jxqcrswf3qgsgfvxyd2mfntp4avk29pj8pwz7pqwmyzrummmrjv3rdsuhg9mc9agrqsqqql8kgrmnng"
-    data-relays="wss://nostr.mutinywallet.com,wss://nos.lol,wss://nostr.wine,wss://relay.nostr.band,wss://relay.nostr.wirednet.jp"></button>
-  <script src="/src/index.tsx" type="module"></script>
-  <script src='https://www.unpkg.com/nostr-login@latest/dist/unpkg.js'></script>
-  <script src="https://cdn.jsdelivr.net/npm/nostr-zap@latest"></script>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <button
+      style="display: none"
+      id="nostr-zap-target"
+      aria-label="Zapボタン"
+      data-npub="npub1sjcvg64knxkrt6ev52rywzu9uzqakgy8ehhk8yezxmpewsthst6sw3jqcw"
+      data-naddr="naddr1qqxnzdenxgcrqv3jxqcrswf3qgsgfvxyd2mfntp4avk29pj8pwz7pqwmyzrummmrjv3rdsuhg9mc9agrqsqqql8kgrmnng"
+      data-relays="wss://nostr.mutinywallet.com,wss://nos.lol,wss://nostr.wine,wss://relay.nostr.band,wss://relay.nostr.wirednet.jp"
+    ></button>
+    <script src="/src/index.tsx" type="module"></script>
+    <script src="https://www.unpkg.com/nostr-login@latest/dist/unpkg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nostr-zap@latest"></script>
+  </body>
 </html>
