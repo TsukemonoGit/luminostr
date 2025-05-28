@@ -92,9 +92,8 @@ export default function Content({
     if (res?.nsecArray) {
       nsecArray = res.nsecArray;
     }
-    console.log(apiRelays.length, targetCounts[menuNum()]);
+
     if (menuNum() > 0 && apiRelays.length < targetCounts[menuNum()]) {
-      console.log(menuNum() > 0 && apiRelays.length < targetCounts[menuNum()]);
       try {
         const visitedRelays =
           apiRelays.length > 0 ? new Set(apiRelays) : new Set(extensionRelays);

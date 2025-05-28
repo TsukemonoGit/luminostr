@@ -19,7 +19,7 @@ export interface RelayList {
   read: string[];
   write: string[];
 }
-const chunkSize = 30;
+const chunkSize = 20;
 // イベントID に基づいて重複を排除する
 const keyFn = (packet: EventPacket): string => packet.event.id;
 
@@ -87,11 +87,13 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
       },
       complete: () => {
         console.log("Completed!");
+        rxNostr.dispose(); // 購読が完了したらRxNostrを解放
         clearTimeout(timeoutId); // 購読が完了したらタイムアウトのタイマーを解除
         resolve(res);
       },
       error: (error: any) => {
         console.error("Error:", error);
+        rxNostr.dispose(); // 購読が完了したらRxNostrを解放
         clearTimeout(timeoutId); // エラーが発生したらタイムアウトのタイマーを解除
         reject(error);
       },
@@ -156,27 +158,28 @@ export const getEventList = async (
   //uniqリセット,tieもリセット
   uniqIds.clear();
   tieMap.clear();
+  const rxNostr = createRxNostr({ verifier });
   for (let i = 0; i < totalChunks; i++) {
     const startIdx = i * chunkSize;
     const endIdx = Math.min((i + 1) * chunkSize, uniqueRelays.length);
     const chunkRelays = uniqueRelays.slice(startIdx, endIdx);
 
-    await processChunk(pubkey, kind, chunkRelays, res, timeoutMillis);
+    await processChunk(rxNostr, pubkey, kind, chunkRelays, res, timeoutMillis);
   }
-
+  rxNostr.dispose();
   //時間順に並べ替えてから返す
   res = sortBookmarkEventList(res);
   return res;
 };
 
 const processChunk = async (
+  rxNostr: RxNostr,
   pubkey: string,
   kind: number,
   chunkRelays: string[],
   res: EventList,
   timeoutMillis: number
 ) => {
-  const rxNostr = createRxNostr({ verifier });
   rxNostr.setDefaultRelays(chunkRelays);
 
   const rxReq = createRxBackwardReq("sub");
@@ -186,7 +189,7 @@ const processChunk = async (
     const handleTimeout = () => {
       console.log("Chunk processing timeout reached!");
       subscription.unsubscribe(); // タイムアウト時に購読を解除
-      rxNostr.dispose();
+
       resolve();
     };
 
@@ -198,13 +201,13 @@ const processChunk = async (
       complete: () => {
         console.log("Chunk processing completed!");
         clearTimeout(timeoutId); // 購読が完了したらタイムアウトのタイマーを解除
-        rxNostr.dispose();
+
         resolve();
       },
       error: (error: any) => {
         console.error("Chunk processing error:", error);
         clearTimeout(timeoutId); // エラーが発生したらタイムアウトのタイマーを解除
-        rxNostr.dispose();
+
         resolve();
       },
     };
@@ -408,7 +411,7 @@ export async function getNIP66Relays(
 ): Promise<string[]> {
   const discoveredRelays = new Set<string>();
   const rxNostr = createRxNostr({ verifier });
-
+  uniqIds.clear();
   // コネクションエラーのリレーは visitedRelays に追加せず除外する
   const badRelays = new Set<string>();
   rxNostr.createConnectionStateObservable().subscribe((state) => {
@@ -428,7 +431,7 @@ export async function getNIP66Relays(
     max_depth,
     targetRelayCount
   );
-
+  rxNostr.dispose();
   return Array.from(discoveredRelays);
 }
 
