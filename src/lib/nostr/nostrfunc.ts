@@ -19,6 +19,7 @@ export interface RelayList {
   read: string[];
   write: string[];
 }
+
 const chunkSize = 20;
 // イベントID に基づいて重複を排除する
 const keyFn = (packet: EventPacket): string => packet.event.id;
@@ -144,30 +145,38 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   return res;
 };
 
+// getEventList関数の修正版
 export const getEventList = async (
   pubkey: string,
   kind: number,
   readRelayList: string[],
-  maxRelayLength: number
+  maxRelayLength: number,
+  onProgress?: (current: number, total: number) => void
 ): Promise<EventList> => {
   let res: EventList = {};
   console.log(readRelayList.length);
-  const timeoutMillis: number = 2000; // タイムアウト時間（ミリ秒）
+  const timeoutMillis: number = 2000;
   const uniqueRelays = readRelayList.slice(0, maxRelayLength);
   const totalChunks = Math.ceil(uniqueRelays.length / chunkSize);
-  //uniqリセット,tieもリセット
+
   uniqIds.clear();
   tieMap.clear();
   const rxNostr = createRxNostr({ verifier });
+
   for (let i = 0; i < totalChunks; i++) {
     const startIdx = i * chunkSize;
     const endIdx = Math.min((i + 1) * chunkSize, uniqueRelays.length);
     const chunkRelays = uniqueRelays.slice(startIdx, endIdx);
 
     await processChunk(rxNostr, pubkey, kind, chunkRelays, res, timeoutMillis);
+
+    // 進捗通知
+    if (onProgress) {
+      onProgress(i + 1, totalChunks);
+    }
   }
+
   rxNostr.dispose();
-  //時間順に並べ替えてから返す
   res = sortBookmarkEventList(res);
   return res;
 };
@@ -404,15 +413,21 @@ export async function getOnlineRelays(): Promise<string[]> {
     throw Error;
   }
 }
+// getNIP66Relays関数の修正版
 export async function getNIP66Relays(
   targetRelayCount: number,
   visitedRelays: Set<string> = new Set(),
-  max_depth: number = 5
+  max_depth: number = 5,
+  onProgress?: (
+    current: number,
+    target: number,
+    phase: "searching" | "connecting"
+  ) => void
 ): Promise<string[]> {
   const discoveredRelays = new Set<string>();
   const rxNostr = createRxNostr({ verifier });
   uniqIds.clear();
-  // コネクションエラーのリレーは visitedRelays に追加せず除外する
+
   const badRelays = new Set<string>();
   rxNostr.createConnectionStateObservable().subscribe((state) => {
     if (state.state === "error" && state.from) {
@@ -429,12 +444,15 @@ export async function getNIP66Relays(
     badRelays,
     0,
     max_depth,
-    targetRelayCount
+    targetRelayCount,
+    onProgress
   );
+
   rxNostr.dispose();
   return Array.from(discoveredRelays);
 }
 
+// chunkNIP66関数の修正版
 export async function chunkNIP66(
   rxNostr: RxNostr,
   chunkRelays: string[],
@@ -443,14 +461,24 @@ export async function chunkNIP66(
   badRelays: Set<string>,
   depth: number,
   max_depth: number,
-  targetRelayCount: number
+  targetRelayCount: number,
+  onProgress?: (
+    current: number,
+    target: number,
+    phase: "searching" | "connecting"
+  ) => void
 ): Promise<void> {
   if (
     depth >= max_depth ||
     chunkRelays.length === 0 ||
-    discoveredRelays.size >= targetRelayCount // 目標数超えたら終了
+    discoveredRelays.size >= targetRelayCount
   )
     return;
+
+  // 進捗通知
+  if (onProgress) {
+    onProgress(discoveredRelays.size, targetRelayCount, "searching");
+  }
 
   const timeoutMillis = 2000;
   rxNostr.setDefaultRelays(chunkRelays);
@@ -475,6 +503,11 @@ export async function chunkNIP66(
         const dTag = packet.event.tags?.find((item) => item[0] === "d")?.[1];
         if (dTag && dTag.startsWith("wss://") && !visitedRelays.has(dTag)) {
           discoveredRelays.add(dTag);
+
+          // リアルタイム進捗更新
+          if (onProgress) {
+            onProgress(discoveredRelays.size, targetRelayCount, "searching");
+          }
         }
       },
       complete: () => {
@@ -504,7 +537,9 @@ export async function chunkNIP66(
   for (const relay of chunkRelays) {
     if (!badRelays.has(relay)) visitedRelays.add(relay);
   }
+
   console.log("relay length", visitedRelays.size);
+
   if (newRelays.length > 0 && visitedRelays.size < targetRelayCount) {
     const chunks = chunkArray(newRelays, chunkSize);
     for (const chunk of chunks) {
@@ -516,7 +551,8 @@ export async function chunkNIP66(
         badRelays,
         depth + 1,
         max_depth,
-        targetRelayCount
+        targetRelayCount,
+        onProgress
       );
     }
   }
