@@ -11,6 +11,7 @@ import {
 } from "@suid/material";
 import { createMemo } from "solid-js";
 import LayoutContext, { createLayoutMutable } from "./LayoutContext";
+import Head from "./components/Head";
 
 const drawerWidth = 240;
 const context = createLayoutMutable({
@@ -37,12 +38,15 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(
   () => (
-    <LayoutContext.Provider value={context}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline enableColorScheme />
-        <App />
-      </ThemeProvider>
-    </LayoutContext.Provider>
+    <>
+      <Head />
+      <LayoutContext.Provider value={context}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline enableColorScheme />
+          <App />
+        </ThemeProvider>
+      </LayoutContext.Provider>
+    </>
   ),
   root!
 );
