@@ -1,5 +1,3 @@
-import { RelayList } from "./nostrfunc";
-
 export const relaySearchRelays = [
   //kind 0 (ユーザのプロフィール) と kind 10002 (利用中のリレーリスト) 特化
   "wss://directory.yabu.me",
@@ -10,7 +8,8 @@ export const relaySearchRelays = [
   //kind:3
   "wss://relayable.org",
   //
-  "wss://bostr.nokotaro.com",
+
+  "wss://indexer.coracle.social",
 ];
 
 export const extensionRelays = [
@@ -20,7 +19,7 @@ export const extensionRelays = [
   "wss://nostr-pub.wellorder.net",
   "wss://relay.nostr.band",
   "wss://relay.nostr.wirednet.jp",
-  "wss://nostr-relay.nokotaro.com",
+
   "wss://nostr.wine",
   "wss://nostr.bitcoiner.social",
   "wss://relay.nostr.bg",
@@ -44,7 +43,6 @@ export const extensionRelays = [
   "wss://nostr.einundzwanzig.space",
   "wss://relay.nostr.net",
   //
-  "wss://bostr.nokotaro.com",
 ];
 
 //feedback用のリレー
@@ -57,5 +55,5 @@ export const feedbackRelay = [
 export const defaultRelay = [
   "wss://nos.lol",
   "wss://relay.nostr.band",
-  "wss://relayable.org",
+  "wss://relay.damus.io",
 ];

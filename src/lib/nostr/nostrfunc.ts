@@ -5,11 +5,12 @@ import {
   createRxNostr,
   createTie,
   createUniq,
+  latestEach,
   nip07Signer,
   now,
 } from "rx-nostr";
 import { verifier, seckeySigner } from "rx-nostr-crypto";
-import { feedbackRelay, relaySearchRelays } from "./relays";
+import { extensionRelays, feedbackRelay, relaySearchRelays } from "./relays";
 import { generateSecretKey, getPublicKey, nip04, nip19 } from "nostr-tools";
 import type * as Nostr from "nostr-typedef";
 import { EventParameters } from "nostr-typedef";
@@ -18,6 +19,7 @@ export interface RelayList {
   read: string[];
   write: string[];
 }
+const chunkSize = 30;
 // イベントID に基づいて重複を排除する
 const keyFn = (packet: EventPacket): string => packet.event.id;
 
@@ -148,8 +150,7 @@ export const getEventList = async (
 ): Promise<EventList> => {
   let res: EventList = {};
   console.log(readRelayList.length);
-  const timeoutMillis: number = 1000; // タイムアウト時間（ミリ秒）
-  const chunkSize = 30; // 一度に接続するrelayの数
+  const timeoutMillis: number = 2000; // タイムアウト時間（ミリ秒）
   const uniqueRelays = readRelayList.slice(0, maxRelayLength);
   const totalChunks = Math.ceil(uniqueRelays.length / chunkSize);
   //uniqリセット,tieもリセット
@@ -400,7 +401,131 @@ export async function getOnlineRelays(): Promise<string[]> {
     throw Error;
   }
 }
-//vite  import.meta.env.VITE_FORMSEND_PUBHEX
+export async function getNIP66Relays(
+  targetRelayCount: number,
+  visitedRelays: Set<string> = new Set(),
+  max_depth: number = 5
+): Promise<string[]> {
+  const discoveredRelays = new Set<string>();
+  const rxNostr = createRxNostr({ verifier });
+
+  // コネクションエラーのリレーは visitedRelays に追加せず除外する
+  const badRelays = new Set<string>();
+  rxNostr.createConnectionStateObservable().subscribe((state) => {
+    if (state.state === "error" && state.from) {
+      console.log(`Relay connection error: ${state.from}`);
+      badRelays.add(state.from);
+    }
+  });
+
+  await chunkNIP66(
+    rxNostr,
+    Array.from(visitedRelays),
+    visitedRelays,
+    discoveredRelays,
+    badRelays,
+    0,
+    max_depth,
+    targetRelayCount
+  );
+
+  return Array.from(discoveredRelays);
+}
+
+export async function chunkNIP66(
+  rxNostr: RxNostr,
+  chunkRelays: string[],
+  visitedRelays: Set<string>,
+  discoveredRelays: Set<string>,
+  badRelays: Set<string>,
+  depth: number,
+  max_depth: number,
+  targetRelayCount: number
+): Promise<void> {
+  if (
+    depth >= max_depth ||
+    chunkRelays.length === 0 ||
+    discoveredRelays.size >= targetRelayCount // 目標数超えたら終了
+  )
+    return;
+
+  const timeoutMillis = 2000;
+  rxNostr.setDefaultRelays(chunkRelays);
+
+  const rxReq = createRxBackwardReq();
+  const observable = rxNostr.use(rxReq).pipe(
+    uniq,
+    latestEach(
+      (packet) => packet.event.tags?.find((item) => item[0] === "d")?.[1]
+    )
+  );
+
+  await new Promise<void>((resolve) => {
+    const handleTimeout = () => {
+      console.log("Chunk processing timeout reached!");
+      subscription.unsubscribe();
+      resolve();
+    };
+
+    const observer = {
+      next: (packet: EventPacket) => {
+        const dTag = packet.event.tags?.find((item) => item[0] === "d")?.[1];
+        if (dTag && dTag.startsWith("wss://") && !visitedRelays.has(dTag)) {
+          discoveredRelays.add(dTag);
+        }
+      },
+      complete: () => {
+        clearTimeout(timeoutId);
+        resolve();
+      },
+      error: (err: any) => {
+        console.error("Error in observable:", err);
+        clearTimeout(timeoutId);
+        resolve();
+      },
+    };
+
+    const subscription = observable.subscribe(observer);
+    const timeoutId = setTimeout(handleTimeout, timeoutMillis);
+
+    rxReq.emit({
+      kinds: [30166],
+      until: now(),
+    });
+  });
+
+  const newRelays = Array.from(discoveredRelays).filter(
+    (url) => !visitedRelays.has(url) && !badRelays.has(url)
+  );
+
+  for (const relay of chunkRelays) {
+    if (!badRelays.has(relay)) visitedRelays.add(relay);
+  }
+  console.log("relay length", visitedRelays.size);
+  if (newRelays.length > 0 && visitedRelays.size < targetRelayCount) {
+    const chunks = chunkArray(newRelays, chunkSize);
+    for (const chunk of chunks) {
+      await chunkNIP66(
+        rxNostr,
+        chunk,
+        visitedRelays,
+        discoveredRelays,
+        badRelays,
+        depth + 1,
+        max_depth,
+        targetRelayCount
+      );
+    }
+  }
+}
+
+function chunkArray<T>(arr: T[], size: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
 
 export async function sendMessage(message: string, pubhex: string) {
   if (pubhex) {
