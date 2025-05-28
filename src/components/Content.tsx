@@ -3,6 +3,7 @@ import {
   Container,
   Grid,
   Input,
+  LinearProgress,
   Stack,
   Typography,
   useTheme,
@@ -38,6 +39,7 @@ let userRelays: RelayList = {
 let pubHex: string;
 let nsecArray: Uint8Array;
 let apiRelays: string[] = [];
+
 export default function Content({
   nowProgress,
   setNowProgress,
@@ -61,6 +63,10 @@ export default function Content({
   const [kindError, setKindError] = createSignal(false);
   const [pubkeyError, setPubkeyError] = createSignal(false);
 
+  // 進捗状態を追加
+  const [progressText, setProgressText] = createSignal<string>("");
+  const [progressValue, setProgressValue] = createSignal<number>(0);
+
   const reset = () => {
     setKindError(false);
     setPubkeyError(false);
@@ -68,109 +74,15 @@ export default function Content({
   };
   //test
 
-  // menuごとの目標リレー数設定 //つながらないリレーとかあって減るから
-  const targetCounts = [30, 80, 240, 440];
+  // menuごとの目標リレー数設定
+  const targetCounts = [30, 60, 200, 400];
 
   //setEvents(kind30001);
   //---
-  const handleClickSearch = async () => {
-    reset();
-
-    const res = checkPubkey(pubkey());
-    if (!res) {
-      setPubkeyError(true);
-      return;
-    }
-    if (kind() === "") {
-      setKindError(true);
-      return;
-    }
-    setNowProgress(true);
-
-    const kindNum = Number(kind()); //さきにnumにしてこていしとく
-    pubHex = res?.pubhex;
-    if (res?.nsecArray) {
-      nsecArray = res.nsecArray;
-    }
-
-    if (menuNum() > 0 && apiRelays.length < targetCounts[menuNum()]) {
-      try {
-        const visitedRelays =
-          apiRelays.length > 0 ? new Set(apiRelays) : new Set(extensionRelays);
-        console.log("visitedRelays:", visitedRelays.size);
-        const newRelays = await getNIP66Relays(
-          targetCounts[menuNum()],
-          visitedRelays
-        );
-        console.log("newRelays:", newRelays.length);
-        if (newRelays.length > apiRelays.length) {
-          apiRelays = Array.from(new Set([...apiRelays, ...newRelays]));
-          console.log("Updated apiRelays:", apiRelays);
-        }
-      } catch (error) {
-        console.log("failed to get online relays");
-        setToastState({
-          open: true,
-          message: (
-            <>
-              Failed to get online relays. <br /> Please check the option to
-              'about 30 relay' or wait for a while and retry
-            </>
-          ),
-          type: "error",
-        });
-
-        setNowProgress(false);
-        return;
-      }
-    }
-    // console.log(pubHex);
-    //   console.log(kindNum);
-    try {
-      if (userRelays.pubkey !== pubHex || userRelays.read.length <= 0) {
-        userRelays = await getUserRelayList(pubHex);
-        if (userRelays.read.length <= 0) {
-          console.log(userRelays);
-          setToastState({
-            open: true,
-            message: "Failed to get your relays. so set default relays",
-            type: "warning",
-          });
-
-          userRelays.read = defaultRelay;
-          userRelays.write = defaultRelay;
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    // console.log(userRelays);
-    const totalRelay = Array.from(
-      new Set([
-        ...userRelays.read,
-        ...userRelays.write,
-        ...extensionRelays,
-        ...apiRelays,
-      ])
-    );
-
-    try {
-      const eventList = await getEventList(
-        pubHex,
-        kindNum,
-        totalRelay,
-        menuNum() < 3 ? targetCounts[menuNum()] : totalRelay.length
-      );
-      //const eventList = testEventList;
-      //const eventList = kind30001;
-      console.log(eventList);
-      setEvents(eventList);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setNowProgress(false);
-  };
+  // 進捗コールバック用の型定義
+  interface RelayProgressCallback {
+    (current: number, target: number, phase: "searching" | "connecting"): void;
+  }
 
   const publishEvent = async (ev: NostrEvent) => {
     setPubkeyError(false);
@@ -310,9 +222,143 @@ export default function Content({
     }
   };
 
+  // 進捗コールバック関数
+  const onRelayProgress: RelayProgressCallback = (current, target, phase) => {
+    const percentage = Math.round((current / target) * 100);
+    setProgressValue(percentage);
+
+    if (phase === "searching") {
+      setProgressText(
+        `Searching relays: ${current}/${target} (${percentage}%)`
+      );
+    } else {
+      setProgressText(
+        `Connecting relays: ${current}/${target} (${percentage}%)`
+      );
+    }
+  };
+  const handleClickSearch = async () => {
+    reset();
+    setProgressText("");
+    setProgressValue(0);
+
+    const res = checkPubkey(pubkey());
+    if (!res) {
+      setPubkeyError(true);
+      return;
+    }
+    if (kind() === "") {
+      setKindError(true);
+      return;
+    }
+    setNowProgress(true);
+
+    const kindNum = Number(kind());
+    pubHex = res?.pubhex;
+    if (res?.nsecArray) {
+      nsecArray = res.nsecArray;
+    }
+
+    if (menuNum() > 0 && apiRelays.length < targetCounts[menuNum()]) {
+      try {
+        const visitedRelays =
+          apiRelays.length > 0 ? new Set(apiRelays) : new Set(extensionRelays);
+
+        console.log("visitedRelays:", visitedRelays.size);
+
+        // 進捗コールバック付きでリレー取得
+        const newRelays = await getNIP66Relays(
+          targetCounts[menuNum()],
+          visitedRelays,
+          5, // max_depth
+          onRelayProgress // 進捗コールバックを追加
+        );
+
+        console.log("newRelays:", newRelays.length);
+        if (newRelays.length > apiRelays.length) {
+          apiRelays = Array.from(new Set([...apiRelays, ...newRelays]));
+          console.log("Updated apiRelays:", apiRelays);
+        }
+      } catch (error) {
+        console.log("failed to get online relays");
+        setToastState({
+          open: true,
+          message: (
+            <>
+              Failed to get online relays. <br /> Please check the option to
+              'about 30 relay' or wait for a while and retry
+            </>
+          ),
+          type: "error",
+        });
+        setNowProgress(false);
+        return;
+      }
+    }
+
+    // Event search progress display
+    setProgressText("Searching events...");
+
+    try {
+      if (userRelays.pubkey !== pubHex || userRelays.read.length <= 0) {
+        userRelays = await getUserRelayList(pubHex);
+        if (userRelays.read.length <= 0) {
+          console.log(userRelays);
+          setToastState({
+            open: true,
+            message: "Failed to get your relays. so set default relays",
+            type: "warning",
+          });
+          userRelays.read = defaultRelay;
+          userRelays.write = defaultRelay;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    const totalRelay = Array.from(
+      new Set([
+        ...userRelays.read,
+        ...userRelays.write,
+        ...extensionRelays,
+        ...apiRelays,
+      ])
+    );
+
+    try {
+      const eventList = await getEventList(
+        pubHex,
+        kindNum,
+        totalRelay,
+        menuNum() < 3 ? targetCounts[menuNum()] : totalRelay.length,
+        (current, total) => {
+          const percentage = Math.round((current / total) * 100);
+          setProgressValue(percentage);
+          setProgressText(`Searching events: ${percentage}%`);
+        }
+      );
+
+      console.log(eventList);
+      setEvents(eventList);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setProgressText("");
+    setProgressValue(0);
+    setNowProgress(false);
+  };
+
   return (
     <main>
-      <Container maxWidth="lg" sx={{ marginTop: "4rem" }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          marginTop: "4rem",
+          paddingBottom: nowProgress() ? "120px" : "2rem",
+        }}
+      >
         <Typography variant="h5" component="div" sx={{ color: "gray" }}>
           Nostr Replaceable Event Recovery Tool
         </Typography>
@@ -400,6 +446,38 @@ export default function Content({
           setModalSettings={setModalSettings}
         />
       </Container>
+      {/* 進捗表示を下部固定 */}
+      {nowProgress() && (
+        <Stack
+          spacing={1}
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: "background.paper",
+            borderTop: 1,
+            borderColor: "divider",
+            p: 2,
+            zIndex: 1000,
+            boxShadow: "0 -2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <Typography variant="body2" color="text.secondary" textAlign="center">
+            {progressText()}
+          </Typography>
+          <LinearProgress
+            variant="determinate"
+            value={progressValue()}
+            sx={{
+              height: 8,
+              borderRadius: 4,
+
+              mx: "auto",
+            }}
+          />
+        </Stack>
+      )}
     </main>
   );
 }

@@ -44,20 +44,19 @@ export default function App() {
       />
       <Footer />
       <Toast handleToastClose={handleToastClose} toastState={toastState} />
-      <Show when={nowProgress()}>
+      {/*   <Show when={nowProgress()}>
         <CircularProgress
           color="secondary"
           sx={{ position: "fixed", bottom: 10, right: 10 }}
           size={100}
         />
-      </Show>
+      </Show> */}
       <Show when={modalSettings().open}>
         <Dynamic
           component={modalSettings().component}
           {...modalSettings().props}
         />
       </Show>
-
     </>
   );
 }
