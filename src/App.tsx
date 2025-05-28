@@ -7,7 +7,6 @@ import Content from "./components/Content";
 import Toast from "./components/modals/Toast";
 import { Dynamic } from "solid-js/web";
 import Footer from "./components/Footer";
-import { Meta } from "@solidjs/meta";
 
 export default function App() {
   const [toastState, setToastState] = createSignal<ToastSettings>({
@@ -29,16 +28,10 @@ export default function App() {
     props: null,
   });
 
-  const getOgImageUrl = () => {
-    // 環境変数またはフォールバック値を使用
-    const baseUrl = window.location.origin || ".";
-    return `${baseUrl}/favicon.svg`;
-  };
   return (
     <>
       {/* <Head /> */}
 
-      <Meta property="og:image" content={getOgImageUrl()} />
       <Header
         setModalSettings={setModalSettings}
         setToastState={setToastState}
