@@ -7,6 +7,7 @@ import Content from "./components/Content";
 import Toast from "./components/modals/Toast";
 import { Dynamic } from "solid-js/web";
 import Footer from "./components/Footer";
+import Head from "./components/Head";
 
 export default function App() {
   const [toastState, setToastState] = createSignal<ToastSettings>({
@@ -30,7 +31,7 @@ export default function App() {
 
   return (
     <>
-      {/* <Head /> */}
+      <Head />
 
       <Header
         setModalSettings={setModalSettings}
