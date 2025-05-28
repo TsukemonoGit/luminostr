@@ -51,8 +51,9 @@ export const getUserRelayList = async (pubkey: string): Promise<RelayList> => {
   const timeoutMillis: number = 2000;
   const rxNostr = createRxNostr({ verifier });
   rxNostr.setDefaultRelays(relaySearchRelays);
-  //uniqリセット
+  //uniqリセット,tieもリセット
   uniqIds.clear();
+  tieMap.clear();
   const rxReq = createRxBackwardReq("sup");
   const observable = rxNostr.use(rxReq).pipe(tie, uniq);
 
@@ -151,8 +152,9 @@ export const getEventList = async (
   const chunkSize = 30; // 一度に接続するrelayの数
   const uniqueRelays = readRelayList.slice(0, maxRelayLength);
   const totalChunks = Math.ceil(uniqueRelays.length / chunkSize);
-  //uniqリセット
+  //uniqリセット,tieもリセット
   uniqIds.clear();
+  tieMap.clear();
   for (let i = 0; i < totalChunks; i++) {
     const startIdx = i * chunkSize;
     const endIdx = Math.min((i + 1) * chunkSize, uniqueRelays.length);
