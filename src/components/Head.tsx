@@ -12,7 +12,9 @@ export default function Head() {
       <Meta property="og:title" content="Luminostr" />
       <Meta
         property="og:image"
-        content={`${window.location.origin}/favicon.svg`}
+        content={`${window.location.origin}${
+          import.meta.env.BASE_URL
+        }favicon.svg`}
       />
       <Meta
         property="og:description"
