@@ -11880,8 +11880,6 @@ export const testEventList: EventList = {
           ],
         ],
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostr-relay.nokotaro.com",
@@ -19067,8 +19065,6 @@ export const testEventList: EventList = {
         ],
         sig: "97cac6fd08ddfe3e4c5e459de44dab0c366bad44cd1504ada031637fc9f81b9c9182bb09303e59c776e641f39e49b3907b55a2723925399b5aa4a3051ad6254e",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
 };

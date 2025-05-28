@@ -30,6 +30,7 @@ let userRelays: RelayList = {
     "wss://nosdrive.app/relay/",
     "wss://yabu.me/",
   ],
+  pubkey: "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
 };
 export const kind30030: EventList = {
   moji: [
@@ -155,8 +156,6 @@ export const kind30030: EventList = {
         ],
         sig: "5deb3243f16e6b3928d6feff10d1ca172f4d6439ec82d2a94e6bb96e24480ba57622b4947d308c86fea94137ab7581b27208faef75062d8a2246547010ca1990",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
   mono: [
@@ -402,8 +401,6 @@ export const kind30030: EventList = {
         ],
         sig: "e45834e293be372b74921dfd48fdb2d85e17f4c30f1c5aaac4f419d7b1c9cb4d0ccd394a87d2e83354f0166502f2397f4dccf69bb2e98fa75ac2035d83f27420",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
     {
       from: "wss://nostr-relay.nokotaro.com",
@@ -647,8 +644,6 @@ export const kind30030: EventList = {
         ],
         sig: "a0d9ad38f2ecf952738966c458b415247de76601b239e1234ba4d027d8d71b6fb71119a461d978ae783cc0d97c467436574183272a9c1575f364e2f2de0475fc",
       },
-      rootPubkey:
-        "84b0c46ab699ac35eb2ca286470b85e081db2087cdef63932236c397417782f5",
     },
   ],
 };

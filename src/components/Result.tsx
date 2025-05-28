@@ -1,23 +1,22 @@
 import {
   Box,
   Card,
-  Divider,
+
   Typography,
   alpha,
   useTheme,
 } from "@suid/material";
 import { Accessor, For, Setter, Show, createSignal } from "solid-js";
 
-import type * as Nostr from "nostr-typedef";
-import { EventList, RelayList, getRelaysById } from "../lib/nostr/nostrfunc";
+import { EventList, getRelaysById } from "../lib/nostr/nostrfunc";
 import EventItem from "./EventItem";
 import { EventPacket } from "rx-nostr";
-import { Dynamic } from "solid-js/web";
+
 import JsonModal from "./modals/JsonModal";
 import PublishModal from "./modals/PublishModal";
 export default function Result({
   events,
-  setEvents,
+
   setNowProgress,
   nowProgress,
   publishEvent,

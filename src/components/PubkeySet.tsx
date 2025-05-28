@@ -1,5 +1,5 @@
-import { Button, Grid, TextField, useTheme } from "@suid/material";
-import { Accessor, For, Setter, createSignal } from "solid-js";
+import { Button, Grid, TextField} from "@suid/material";
+import { Accessor,  Setter } from "solid-js";
 import type * as Nostr from "nostr-typedef";
 import { nip19 } from "nostr-tools";
 export default function PubkeySet({

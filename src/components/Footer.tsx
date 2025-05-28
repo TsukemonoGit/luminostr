@@ -1,10 +1,5 @@
 import {
-  Box,
-
   Container,
-  Divider,
-
-  alpha,
   useTheme,
 } from "@suid/material";
 import "@konemono/nostr-share-component"

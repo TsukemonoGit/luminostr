@@ -1,16 +1,13 @@
 import {
   Modal,
   Box,
-  Grid,
   useTheme,
-  Button,
-  Link,
   Typography,
   Stack,
   IconButton,
 } from "@suid/material";
 import { EventPacket } from "rx-nostr";
-import { Accessor, Match, Show, Switch } from "solid-js";
+import { Accessor, Match, Switch } from "solid-js";
 import { githubIcon, nostrIcon, lightningIcon2 } from "../../lib/icons";
 import { useLanguage } from "../util/useLanguage";
 

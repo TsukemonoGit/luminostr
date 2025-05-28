@@ -7,15 +7,11 @@ import {
   Typography,
   useTheme,
 } from "@suid/material";
-import { Accessor, JSX, Setter, ValidComponent, createSignal } from "solid-js";
+import { Accessor,  Setter, createSignal } from "solid-js";
 import KindSelect from "./KindSelect";
 import PubkeySet from "./PubkeySet";
 import MenuSelect from "./MenuSelect";
 import Result from "./Result";
-import type * as Nostr from "nostr-typedef";
-import CheckIcon from "@suid/icons-material/Check";
-import WarningAmberIcon from "@suid/icons-material/WarningAmber";
-import FileUploadIcon from "@suid/icons-material/FileUpload";
 import SearchIcon from "@suid/icons-material/Search";
 import {
   EventList,
@@ -28,12 +24,9 @@ import {
   publishEventToRelay,
 } from "../lib/nostr/nostrfunc";
 import { defaultRelay, extensionRelays } from "../lib/nostr/relays";
-import { testEventList } from "../lib/nostr/nostrfunc.test";
 import { EventPacket } from "rx-nostr";
-import { kind30030 } from "../lib/nostr/testData";
 import { NostrEvent } from "nostr-tools";
 import { publishedJSX } from "./util/Are";
-import { kind30001 } from "../lib/nostr/testEvents30001";
 import { FileUpload } from "@suid/icons-material";
 
 const relayLength = [30, 60, 200];
@@ -271,7 +264,6 @@ export default function Content({
           from: "Local",
           event: contentsObj,
           subId: "",
-          rootPubkey: "",
           type: "EVENT",
           message: ["EVENT", "", contentsObj],
         };
