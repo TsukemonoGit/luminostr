@@ -8,10 +8,13 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  Link,
 } from "@suid/material";
 import { createMemo } from "solid-js";
 import LayoutContext, { createLayoutMutable } from "./LayoutContext";
 import Head from "./components/Head";
+import { MetaProvider, Meta } from "@solidjs/meta";
+import { Title } from "@suid/icons-material";
 
 const drawerWidth = 240;
 const context = createLayoutMutable({
@@ -39,7 +42,19 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 render(
   () => (
     <>
-      <Head />
+      <MetaProvider>
+        <Title>Luminostr</Title>
+        <Link rel="icon" href="./favicon.svg" />
+        <Meta property="og:type" content="website" />
+        <Meta property="og:title" content="Luminostr" />
+        <Meta
+          property="og:image"
+          content={`${window.location.origin}${
+            import.meta.env.BASE_URL
+          }favicon.svg`}
+        />
+        <Meta property="og:description" content="Event Recovery Tool" />
+      </MetaProvider>
       <LayoutContext.Provider value={context}>
         <ThemeProvider theme={theme}>
           <CssBaseline enableColorScheme />
