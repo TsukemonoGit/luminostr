@@ -1,4 +1,3 @@
-import { CircularProgress } from "@suid/material";
 import { Show, createSignal } from "solid-js";
 //import Head from "./components/Head";
 import Header from "./components/Header";
@@ -7,7 +6,6 @@ import Content from "./components/Content";
 import Toast from "./components/modals/Toast";
 import { Dynamic } from "solid-js/web";
 import Footer from "./components/Footer";
-import { Meta } from "@solidjs/meta";
 
 export default function App() {
   const [toastState, setToastState] = createSignal<ToastSettings>({

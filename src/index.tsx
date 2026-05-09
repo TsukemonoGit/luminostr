@@ -1,5 +1,7 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
+import { waitNostr } from "nip07-awaiter";
+import { init as initNostrLogin } from "@konemono/nostr-login";
 
 import "./index.css";
 import App from "./App";
@@ -22,16 +24,23 @@ const context = createLayoutMutable({
 const palette = createMemo(() =>
   createPalette({
     mode: context.darkMode ? "dark" : "light",
-  })
+  }),
 );
 
 const theme = createTheme({
   palette,
 });
+
+// Ensure Nostr providers are ready before any window.nostr usage.
+await waitNostr(1000);
+initNostrLogin({
+  // Configure options if needed.
+});
+
 const root = document.getElementById("root");
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
-    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?"
+    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?",
   );
 }
 
@@ -44,5 +53,5 @@ render(
       </ThemeProvider>
     </LayoutContext.Provider>
   ),
-  root!
+  root!,
 );

@@ -24,11 +24,13 @@
     "vitest": "^3.1.4"
   },
   "dependencies": {
+    "@konemono/nostr-login": "^1.15.7",
     "@konemono/nostr-share-component": "^0.4.1",
     "@solidjs/meta": "^0.29.4",
     "@suid/icons-material": "^0.8.1",
     "@suid/material": "^0.18.0",
     "@suid/vite-plugin": "^0.4.0",
+    "nip07-awaiter": "^1.1.0",
     "nostr-tools": "^2.13.0",
     "rx-nostr": "^3.6.1",
     "rx-nostr-crypto": "^3.1.3",
